@@ -1,10 +1,10 @@
 docker swarm 常用命令  
 ```
-命令 	                            说明  
-docker swarm init 	              初始化集群
+命令 	                              说明  
+docker swarm init 	                初始化集群
 docker swarm join-token worker  	查看工作节点的 token
 docker swarm join-token manager 	查看管理节点的 token
-docker swarm join 	              加入集群中
+docker swarm join 	                加入集群中
 ```  
 docker node 常用命令  
 ```
