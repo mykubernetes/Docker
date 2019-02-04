@@ -38,3 +38,27 @@ docker stack rm                      删除堆栈
 docker stack services                列出堆栈中的服务
 docker stack down                    移除某个堆栈（不会删除数据）
 ```  
+
+一、Docker Swarm 配置集群节点  
+```
+$ docker swarm init --advertise-addr 192.168.99.100
+  Swarm initialized: current node (n0ub7dpn90rxjq97dr0g8we0w) is now a manager.
+  To add a worker to this swarm, run the following command:
+        docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-envtxo4dl6df2ar3qldcccfdg 192.168.99.100:2377
+  To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
+```  
+二、加入集群
+加入Swarm集群工作节点  
+```
+docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-envtxo4dl6df2ar3qldcccfdg 192.168.99.100:2377
+This node joined a swarm as a worker.
+```  
+加入Swarm集群管理节点  
+```
+$ docker swarm join-token manager
+    To add a manager to this swarm, run the following command:
+    docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-0koz1b98sco8r5cn3g61eahnu 192.168.99.100:2377
+
+$ docker-machine ssh manager2 "docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-0koz1b98sco8r5cn3g61eahnu 192.168.99.100:2377"
+This node joined a swarm as a manager.
+```
