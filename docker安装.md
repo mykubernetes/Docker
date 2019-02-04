@@ -45,3 +45,10 @@ $ cat /etc/docker/daemon.json
  "registry-mirrors": ["https://registry.docker-cn.com","https://dhq9bx4f.mirror.aliyuncs.com"]
 }
 ```  
+
+四、镜像的导入导出  
+1、将镜像文件导出为tar文件:  
+``` docker save jenkins:v1.1 -o jenkins.tar.gz  ```
+2、从tar文件导入镜像 ：  
+``` docker load -i jenkins.tar.gz ```  
+
