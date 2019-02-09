@@ -1,6 +1,6 @@
 使用容器安装Nexus3
 =================
-一、部署nexus
+一、部署nexus  
 1.下载nexus3的镜像：  
 ``` docker pull sonatype/nexus3 ```  
 2.使用镜像启动一个容器：  
