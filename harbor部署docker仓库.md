@@ -22,3 +22,8 @@ db_password = root123
 cd /opt/module/harbor/
 ./install.sh
 ```
+8、启动停止
+```
+docker-compose start
+docker-compose stop
+```
