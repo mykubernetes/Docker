@@ -1,0 +1,603 @@
+浏览器打开：  
+
+输入密码，初始密码保存在：/var/lib/jenkins/secrets/initialAdminPassword  
+
+点击：继续，进入：  
+
+单击安装推荐插件。进入插件安装界面：  
+
+这个安装过程有有点慢。  
+三、了解Jenkins  
+
+安装插件成功后，会进入创建管理员用户界面：  
+
+暂时跳过设置url，进入：  
+
+配置文件： /etc/sysconfig/jenkins  
+
+jenkins主目录：/var/lib/jenkins/  
+四、发布php代码  
+（1）密钥的设置  
+
+1、安装Publish  Over SSH、Git plugin插件  
+
+登录jenkins，系统管理-->插件管理-->可选插件。  
+
+安装Publish  Over SSH、Git plugin插件。  
+
+安装完成后要重启jenkins服务。  
+
+2、创建ssh密钥  
+
+192.168.10.101是jenkins端，创建ssh密钥。  
+```
+[root@lb01 ~]# ssh-keygen 
+Generating public/private rsa key pair.
+Enter file in which to save the key (/root/.ssh/id_rsa): 
+/root/.ssh/id_rsa already exists.
+Overwrite (y/n)? 
+[root@lb01 ~]# 
+```  
+私钥：/root/.ssh/id_rsa。  
+
+3、配置Jenkins的SSH密钥  
+
+私钥：  
+
+点击系统管理-->系统设置，找到Publish Over SSH  
+
+Passphrase：留空，Path  to key：留空，把101的私钥复制黏贴到key  
+
+点击：新增。  
+
+如果有多台则继续添加增加。  
+
+最后点击保存。  
+
+公钥：  
+
+同时将101机子的公钥内容（/root/.ssh/id_rsa.pub ）复制到102的/root/.ssh/authorized_keys  
+
+这里添加了两个ssh：  
+
+点击：Test Configuration，均显示Sucess。OK，配置成功。  
+
+SSH密钥设置思路：  
+
+    1、jenkins端生成SSH密钥  
+
+    2、将jenkins生成的私钥内容（/.ssh/id_rsa）复制到Publish Over SSH中的key  
+
+    3、将jenkins端的公钥（/root/.ssh/id_rsa.pub）内容复制黏贴到客户端的/root/.ssh/authorized_keys文件中。  
+
+（2）新建一个任务  
+
+首页点击新建任务。  
+
+填写相关信息：  
+
+选择构建自由风格的软件项目，然后点确定。  
+
+源码管理选择git，地址自己注册一个。  
+
+构建：  
+
+构建：选择Send files  or execute command over SSH  
+
+**/**：表示全部。  
+
+根据实际情况设置  
+
+最后，点击保存。  
+
+构建：  
+
+查看控制台输出：  
+
+最后显示：SUCESS。  
+
+到lb01、lb02查看一下：  
+```
+[root@lb01 ~]# ll -d /tmp/jenkins_test/
+drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/jenkins_test/
+[root@lb01 ~]# 
+
+lb02：
+
+[root@lb02 ~]# ll -d /tmp/lb02/
+drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
+[root@lb02 ~]# 
+```
+（3）测试  
+
+登录到自己的https://github.com/yanyuzm/mytest。比如在修改README.MD文件内容：  
+
+    # mytest  
+    测试项目  
+    #  
+
+提交后。  
+
+回到jenkins点击立即构建  
+
+构建后，到lb01查看一下：  
+
+[root@lb01 ~]# cat /tmp/jenkins_test/README.md   
+# mytest  
+测试项目  
+#  
+[root@lb01 ~]#   
+
+在lb02查看：  
+
+[root@lb02 ~]# cat /tmp/lb02/README.md  
+# mytest  
+测试项目  
+#  
+[root@lb02 ~]#  
+
+均同步成功。  
+
+也就是说在jenkins上修改项目的文件，重新构建后，会同步到相关的机子上。  
+五、Jenkins邮件配置  
+
+依次点击：系统管理-->系统设置-->Jenkins Location，向下拉找到邮件通知，然后设置。  
+
+系统管理员邮件地址和发邮件的邮箱要保持一致。  
+
+设置好之后，点击测试一下。提示：Email was successfully sent，OK，配置成功。  
+
+最后点击保存即可。  
+
+配置好之后，回到test_php工程里配置：  
+
+选择：构建后操作--> E-mail  Notification：  
+
+设置之后，修改一下test_php工程的文件，比如：  
+
+[root@lb02 ~]# ls /tmp/lb02/README.md  
+/tmp/lb02/README.md  
+[root@lb02 ~]# chattr +i /tmp/lb02/README.md  
+[root@lb02 ~]#   
+
+重新构建项目，看看会不会收到邮件通知：  
+
+不过：这个邮件通知，只有在构建失败的时候才会发送。如果构建成功，则不会发送邮件。  
+六、插件email-ext  
+
+（1）Extension E-mail Notification配置  
+
+插件名称：Email Extension Plugin，默认已安装。  
+
+设置：  
+
+依次点击：系统管理-->系统设置-->Extension E-mail Notification。  
+
+往下拉，点击：  
+
+勾选：  
+
+最后，把前面设置的：邮件通知，删除，然后保存退出即可。  
+
+（2）修改test_php的配置：  
+
+删除E-mail Notification的配置：  
+
+ 
+
+（3）测试  
+
+前面中，/tmp/lb02/README.md文件添加了i权限，现在先去掉此权限，再测试。  
+
+[root@lb02 ~]# chattr -i /tmp/lb02/README.md  
+[root@lb02 ~]#   
+
+重新构建：  
+
+七、破解管理员密码  
+
+1、修改/var/lib/jenkins/目录中的config.xml文件，把以下下内容删除：  
+```
+      <useSecurity>true</useSecurity>
+      <authorizationStrategy class="hudson.security.FullControlOnceLoggedInAuthorizationStrategy">
+        <denyAnonymousReadAccess>true</denyAnonymousReadAccess>
+      </authorizationStrategy>
+      <securityRealm class="hudson.security.HudsonPrivateSecurityRealm">
+        <disableSignup>true</disableSignup>
+        <enableCaptcha>false</enableCaptcha>
+      </securityRealm>
+```  
+2、重启jenkins  
+
+3、浏览器打开：192.168.10.101:8080  
+
+无需登录，即可进入首页：  
+
+4、点击：系统管理-->全局安全配置  
+
+勾选“启用安全“，点选“Jenkins专有用户数据库”，并点击“保存”；  
+
+5、重新点击首页>“系统管理”-->管理用户  
+
+修改admin用户的密码保存即可。  
+
+6、修改过admin用户密码之后  
+
+点击：系统管理-->全局安全配置  
+
+取消“启用安全“，取消“Jenkins专有用户数据库”，并点击“保存”；  
+
+7、把第1步中删除的内容，复制回去。  
+
+8、重启jenkins服务  
+八、部署java项目-创建私有仓库  
+
+java的项目需要编译和打包，编译和打包可以使用maven。  
+
+本次实验使用git私有仓库的形式。请到https://github.com/注册一个私有仓库，并且设置ssh密钥登陆。  
+
+将上面的仓库克隆到/home目录中  
+
+[root@lb01 ~]# cd /home/
+[root@lb01 home]# git clone git@github.com:yanyuzm/test_java
+Cloning into 'test_java'...
+warning: You appear to have cloned an empty repository.
+[root@lb01 home]#
+
+初始化及创建推送一个测试文件：
+
+[root@lb01 home]# cd test_java/
+[root@lb01 test_java]# git init
+Reinitialized existing Git repository in /home/test_java/.git/
+[root@lb01 test_java]# 
+
+推送测试文件：
+
+[root@lb01 test_java]# echo haha > README.md
+[root@lb01 test_java]# git add README.md
+[root@lb01 test_java]# git commit -m "first commit"
+[master (root-commit) 4fb58db] first commit
+ 1 file changed, 1 insertion(+)
+ create mode 100644 README.md
+[root@lb01 test_java]# git remote add origin https://github.com/yanyuzm/test_java.git
+fatal: remote origin already exists.
+[root@lb01 test_java]# git push -u origin master
+Counting objects: 3, done.
+Writing objects: 100% (3/3), 206 bytes | 0 bytes/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+remote: 
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/yanyuzm/test_java/pull/new/master
+remote: 
+To git@github.com:yanyuzm/test_java
+ * [new branch]      master -> master
+Branch master set up to track remote branch master from origin.
+[root@lb01 test_java]#
+
+查看一下：
+
+OK，创建成功。
+九、部署java项目-下载zrlog源码
+
+下载地址：https://codeload.github.com/94fzb/zrlog/zip/master
+
+下载到/home/目录
+
+[root@lb01 home]# curl -O https://codeload.github.com/94fzb/zrlog/zip/master
+
+解压，解压后的目录为：zrlog-master
+
+[root@lb01 home]# ls
+git  master  mytest  test  test_java  zrlog-master
+[root@lb01 home]# 
+
+将zrlog-master目录的全部文件复制到到test_java目录中。
+
+[root@lb01 home]# mv zrlog-master/* test_java/
+mv: overwrite ‘test_java/README.md’? r
+[root@lb01 home]# 
+
+进入test_java目录推送：
+
+[root@lb01 home]# cd test_java/
+[root@lb01 test_java]# git add .
+[root@lb01 test_java]# git commit -m "add zrlog" 
+[root@lb01 test_java]# git push
+Counting objects: 568, done.
+Compressing objects: 100% (517/517), done.
+Writing objects: 100% (567/567), 3.96 MiB | 1.07 MiB/s, done.
+Total 567 (delta 61), reused 0 (delta 0)
+remote: Resolving deltas: 100% (61/61), done.
+To git@github.com:yanyuzm/test_java
+   4fb58db..67c89f3  master -> master
+[root@lb01 test_java]# 
+
+十、安装tomcat
+
+1、JDK安装
+
+在192.168.10.102机子上安装jdk+tomcat
+
+[root@lb02 ~]# hostname -i
+192.168.10.102
+[root@lb02 ~]# 
+
+jdk使用1.8版本，安装过程省略。
+
+2、安装tomcat
+
+下载解压：
+
+[root@lb02 ~]# curl -O https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.12/bin/apache-tomcat-9.0.12.tar.gz
+[root@lb02 ~]# tar xf apache-tomcat-9.0.12.tar.gz -C /usr/local/
+[root@lb02 ~]# cd /usr/local/
+[root@lb02 local]# mv apache-tomcat-9.0.12/ tomcat9.0
+[root@lb02 local]# 
+
+配置环境变量：
+
+[root@lb02 local]# vim /etc/profile.d/tomcat.sh
+export CATALINA_HOME=/usr/local/tomcat9.0
+export PATH=$CATALINA_HOME/bin:$PATH
+[root@lb02 local]# chmod +x /etc/profile.d/tomcat.sh
+[root@lb02 local]# source /etc/profile.d/tomcat.sh
+[root@lb02 local]# 
+
+启动tomcat:
+
+[root@lb02 ~]# startup.sh 
+Using CATALINA_BASE:   /usr/local/tomcat9.0
+Using CATALINA_HOME:   /usr/local/tomcat9.0
+Using CATALINA_TMPDIR: /usr/local/tomcat9.0/temp
+Using JRE_HOME:        /usr/local/jdk1.8
+Using CLASSPATH:       /usr/local/tomcat9.0/bin/bootstrap.jar:/usr/local/tomcat9.0/bin/tomcat-juli.jar
+Tomcat started.
+[root@lb02 ~]# 
+
+浏览器打开：192.168.10.102:8080
+
+OK。tomcat安装成功。
+
+3、配置tomcat管理用户
+
+修改配置文件：conf/tomcat-users.xml，添加相关用户。
+
+[root@lb02 ~]# cd /usr/local/tomcat9.0/conf/
+[root@lb02 conf]# vim tomcat-users.xml
+  <role rolename="manager"/>
+  <role rolename="manager-gui"/>
+  <role rolename="admin"/>
+  <role rolename="admin-gui"/>
+  <role rolename="manager-script"/>
+  <role rolename="manager-jmx"/>
+  <role rolename="manager-status"/>
+  <user username="admin" password="123456" roles="admin-gui,admin,manager-gui,manager,manager-script,manager-jmx,manager-status"/>
+
+修改manager配置：
+
+要想在其他机子访问，修改配置manager/META-INF/context.xml：
+
+在allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />中添加允许访问的ip即可
+
+[root@lb02 conf]# cd ..
+[root@lb02 tomcat9.0]# vim webapps/manager/META-INF/context.xml
+allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|192.168.*.*"/>
+
+停止Tomcat再启动：
+
+[root@lb02 tomcat9.0]# shutdown.sh 
+Using CATALINA_BASE:   /usr/local/tomcat9.0
+Using CATALINA_HOME:   /usr/local/tomcat9.0
+Using CATALINA_TMPDIR: /usr/local/tomcat9.0/temp
+Using JRE_HOME:        /usr/local/jdk1.8
+Using CLASSPATH:       /usr/local/tomcat9.0/bin/bootstrap.jar:/usr/local/tomcat9.0/bin/tomcat-juli.jar
+[root@lb02 tomcat9.0]#         
+[root@lb02 tomcat9.0]# startup.sh 
+Using CATALINA_BASE:   /usr/local/tomcat9.0
+Using CATALINA_HOME:   /usr/local/tomcat9.0
+Using CATALINA_TMPDIR: /usr/local/tomcat9.0/temp
+Using JRE_HOME:        /usr/local/jdk1.8
+Using CLASSPATH:       /usr/local/tomcat9.0/bin/bootstrap.jar:/usr/local/tomcat9.0/bin/tomcat-juli.jar
+Tomcat started.
+[root@lb02 tomcat9.0]# 
+
+点击首页的管理页面：
+
+输入用户名和密码即可登录：
+
+登录成功后如下图所示：
+
+至此，tomcat安装成功。
+十一、部署java项目-安装maven
+
+1、下载、安装maven
+
+maven要安装在jenkins所在的机子上，前面中，jenkins安装在192.168.10.101机子上。
+
+下载地址：http://maven.apache.org/download.cgi
+
+下载并解压到/usr/local/目录中
+
+[root@lb01 ~]# curl -O https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
+[root@lb01 ~]# tar xf apache-maven-3.5.4-bin.tar.gz -C /usr/local/
+[root@lb01 ~]#
+
+2、配置环境变量
+
+[root@lb01 ~]# vim /etc/profile.d/maven.sh
+export MAVEN_PATH=/usr/local/apache-maven-3.5.4
+export PATH=$MAVEN_PATH/bin:$PATH
+[root@lb01 ~]# chmod +x /etc/profile.d/maven.sh
+[root@lb01 ~]# source /etc/profile.d/maven.sh
+[root@lb01 ~]# 
+
+查看maven版本信息：
+
+[root@lb01 ~]# mvn --version
+Apache Maven 3.5.4 (1edded0938998edf8bf061f1ceb3cfdeccf443fe; 2018-06-18T02:33:14+08:00)
+Maven home: /usr/local/apache-maven-3.5.4
+Java version: 1.8.0_181, vendor: Oracle Corporation, runtime: /usr/local/jdk1.8/jre
+Default locale: en_US, platform encoding: UTF-8
+OS name: "linux", version: "3.10.0-862.el7.x86_64", arch: "amd64", family: "unix"
+[root@lb01 ~]# 
+
+至此，maven安装完成。
+
+3、jenkins安装maven插件
+
+浏览器打开：192.168.10.101:8080，登录成功后。
+
+点击：系统管理-->全局工具配置
+
+设置全局文件路径，如下图：
+
+新增maven，如下图：
+
+配置jdk：
+
+我的jdk安装路径是：/usr/local/jdk1.8
+
+配置好maven，点击保存
+十二、部署java项目-安装插件
+
+登录jenkins之后，点击系统管理-->管理插件
+
+检查是否安装了Maven Integration plugin和Deploy to container Plugin这两个插件。如果没有安装，则需要安装。
+
+安装成功后，重启jenkins服务。
+
+登录jenkins后点击新建，可以看到有maven的项目选项了：
+
+至此，插件安装成功。
+十三、部署java项目-构建job
+
+1、创建项目
+
+创建一个maven项目，名称为：test-java
+
+创建成功后，页面跳转到：
+
+填写源码管理中的url仓库地址。
+
+如果仓库是私有的，必须配置用户密码等信息，如下：
+
+配置好ssh私钥信息后，保存，下图中选择git。
+
+Build设置：
+
+Goals and options可以设置成：clean install -D maven.test.skip=true，也可以默认不设置；Root POM保持默认。
+
+构建后操作：
+
+添加Editable  Email Notification设置：
+
+设置好之后，保存。
+
+2、构建项目
+
+点击立即构建：
+
+十四、部署java项目-手动安装jdk
+
+1、下载jdk，并解压到/usr/local/目录，然后重命名为：/usr/local/jdk1.8/
+
+jdk下载地址：https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
+
+2、配置环境变量：
+
+[root@lb01 ~]# vim /etc/profile.d/jdk.sh 
+export JAVA_HOME=/usr/local/jdk1.8
+export PATH=$PATH:$JAVA_HOME/bin
+export CLASSPATH=$JAVA_HOME/lib
+
+[root@lb01 ~]# chmod +x /etc/profile.d/jdk.sh
+[root@lb01 ~]# source /etc/profile.d/jdk.sh
+
+十五、部署java项目-发布war包
+
+配置test-java工程的构建后操作：
+
+选择Deploy war/ear to a container：
+
+设置如下：
+
+设置访问tomcat的用户名和密码（不支持tomcat9）：
+
+点击添加，然后设置如下：
+
+保存退出即可。
+
+最后，立即构建。
+
+到tomcat所在的机子（192.168.10.102）查看一下：
+
+[root@lb02 ~]# ls /usr/local/tomcat9.0/webapps/
+docs  examples  host-manager  manager  ROOT  zrlog-2.0.6  zrlog-2.0.6.war
+[root@lb02 ~]# 
+
+war包已经发布过去了。
+
+浏览器打开：http://192.168.10.102:8080/zrlog-2.0.6。
+
+Jenkins中的工程构建tomcat只有8.x版本，而192.168.10.102机子装的是9.0，所以最终会报错。
+
+换回8.x版本之后，重新构建即可。
+
+tomcat8.5下载地址：https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz
+
+192.168.10.102安装tomcat8.5成功，并配置好之后
+
+[root@lb02 local]# startup.sh 
+Using CATALINA_BASE:   /usr/local/tomcat8.5
+Using CATALINA_HOME:   /usr/local/tomcat8.5
+Using CATALINA_TMPDIR: /usr/local/tomcat8.5/temp
+Using JRE_HOME:        /usr/local/jdk1.8
+Using CLASSPATH:       /usr/local/tomcat8.5/bin/bootstrap.jar:/usr/local/tomcat8.5/bin/tomcat-juli.jar
+Tomcat started.
+[root@lb02 local]# 
+
+重新构建test-java工程。
+
+部分构建信息如下：
+
+[INFO] Reactor Summary:
+[INFO] 
+[INFO] zrlog 2.0.6 ........................................ SUCCESS [  1.461 s]
+[INFO] common ............................................. SUCCESS [  6.646 s]
+[INFO] data ............................................... SUCCESS [  3.105 s]
+[INFO] service ............................................ SUCCESS [  3.740 s]
+[INFO] web 2.0.6 .......................................... SUCCESS [  9.116 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time: 27.644 s
+[INFO] Finished at: 2018-09-12T00:42:39+08:00
+[INFO] ------------------------------------------------------------------------
+Waiting for Jenkins to finish collecting data
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/data/pom.xml to com.zrlog/data/2.0.6/data-2.0.6.pom
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/data/target/data-2.0.6.jar to com.zrlog/data/2.0.6/data-2.0.6.jar
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/common/pom.xml to com.zrlog/common/2.0.6/common-2.0.6.pom
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/common/target/common-2.0.6.jar to com.zrlog/common/2.0.6/common-2.0.6.jar
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/pom.xml to com.zrlog/zrlog/2.0.6/zrlog-2.0.6.pom
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/service/pom.xml to com.zrlog/service/2.0.6/service-2.0.6.pom
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/service/target/service-2.0.6.jar to com.zrlog/service/2.0.6/service-2.0.6.jar
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/web/pom.xml to com.zrlog/web/2.0.6/web-2.0.6.pom
+[JENKINS] Archiving /var/lib/jenkins/workspace/test-java/web/target/../../target/zrlog-2.0.6.war to com.zrlog/web/2.0.6/web-2.0.6.war
+/var/lib/jenkins/workspace/test-java/target/zrlog-2.0.6.war is not inside /var/lib/jenkins/workspace/test-java/web/; will archive in a separate pass
+channel stopped
+Deploying /var/lib/jenkins/workspace/test-java/target/zrlog-2.0.6.war to container Tomcat 8.x Remote with context 
+
+  [/var/lib/jenkins/workspace/test-java/target/zrlog-2.0.6.war] is not deployed. Doing a fresh deployment.
+  Deploying [/var/lib/jenkins/workspace/test-java/target/zrlog-2.0.6.war]
+
+Email was triggered for: Always
+Sending email for trigger: Always
+Sending email to: xzm280@163.com
+
+Finished: SUCCESS
+
+OK，成功。
+
+浏览器再次打开：http://192.168.10.102:8080/zrlog-2.0.6/
+
+OK，发布成功。
