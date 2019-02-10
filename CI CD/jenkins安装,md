@@ -19,7 +19,7 @@ https://mirrors.tuna.tsinghua.edu.cn/jenkins/redhat/
 ```
 vim /etc/init.d/jenkins    #在candidates中第一行添加java路径
 candidates=" 
-/opt/soft/jdk1.8.0_60/bin/java
+/opt/jdk1.8.0_60/bin/java     #添加此项
 /etc/alternatives/java
 /usr/lib/jvm/java-1.6.0/bin/java
 /usr/lib/jvm/jre-1.6.0/bin/java
