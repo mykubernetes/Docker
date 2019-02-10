@@ -13,7 +13,7 @@ Jenkins邮件配置
 
 重新构建项目，看看会不会收到邮件通知：  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins21.jpg)  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins22.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins22.jpg)  
 不过：这个邮件通知，只有在构建失败的时候才会发送。如果构建成功，则不会发送邮件。  
 
 
