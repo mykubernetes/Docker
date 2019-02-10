@@ -15,7 +15,8 @@ jenkins安装
 4、配置jenkins JDK路径
 ```
 vim /etc/init.d/jenkins    #在candidates中第一行添加java路径
-candidates=" /opt/soft/jdk1.8.0_60/bin/java
+candidates=" 
+/opt/soft/jdk1.8.0_60/bin/java
 /etc/alternatives/java
 /usr/lib/jvm/java-1.6.0/bin/java
 /usr/lib/jvm/jre-1.6.0/bin/java
