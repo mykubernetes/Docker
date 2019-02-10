@@ -12,24 +12,10 @@ Overwrite (y/n)?
 3、配置Jenkins的SSH密钥  
 点击系统管理-->系统设置，找到Publish Over SSH  
 把私钥复制到key  
-
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins7.jpg)
-
-
-
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins8.jpg)
-
-
-
-
 将公钥内容（/root/.ssh/id_rsa.pub ）复制到其他节点/root/.ssh/authorized_keys  
 
 这里添加了两个ssh：  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins9.jpg)
 点击：Test Configuration，均显示Sucess。OK，配置成功。  
-
-SSH密钥设置思路：  
-
-1、jenkins端生成SSH密钥
-2、将jenkins生成的私钥内容（/.ssh/id_rsa）复制到Publish Over SSH中的key
-3、将jenkins端的公钥（/root/.ssh/id_rsa.pub）内容复制黏贴到客户端的/root/.ssh/authorized_keys文件中。
