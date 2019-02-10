@@ -207,7 +207,7 @@ drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
 无需登录，即可进入首页：  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins30.jpg)
 4、点击：系统管理-->全局安全配置  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins31.jpg)
 勾选“启用安全“，点选“Jenkins专有用户数据库”，并点击“保存”；  
 
 5、重新点击首页>“系统管理”-->管理用户  
@@ -228,24 +228,24 @@ drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
 java的项目需要编译和打包，编译和打包可以使用maven。  
 
 本次实验使用git私有仓库的形式。请到https://github.com/注册一个私有仓库，并且设置ssh密钥登陆。  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins32.jpg)  
 将上面的仓库克隆到/home目录中  
-
+```
 [root@lb01 ~]# cd /home/
 [root@lb01 home]# git clone git@github.com:yanyuzm/test_java
 Cloning into 'test_java'...
 warning: You appear to have cloned an empty repository.
 [root@lb01 home]#
-
-初始化及创建推送一个测试文件：
-
+```  
+初始化及创建推送一个测试文件：  
+```
 [root@lb01 home]# cd test_java/
 [root@lb01 test_java]# git init
 Reinitialized existing Git repository in /home/test_java/.git/
 [root@lb01 test_java]# 
-
-推送测试文件：
-
+```  
+推送测试文件：  
+```
 [root@lb01 test_java]# echo haha > README.md
 [root@lb01 test_java]# git add README.md
 [root@lb01 test_java]# git commit -m "first commit"
@@ -266,32 +266,32 @@ To git@github.com:yanyuzm/test_java
  * [new branch]      master -> master
 Branch master set up to track remote branch master from origin.
 [root@lb01 test_java]#
+```  
+查看一下：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins33.jpg)  
+OK，创建成功。  
+九、部署java项目-下载zrlog源码  
 
-查看一下：
+下载地址：https://codeload.github.com/94fzb/zrlog/zip/master  
 
-OK，创建成功。
-九、部署java项目-下载zrlog源码
-
-下载地址：https://codeload.github.com/94fzb/zrlog/zip/master
-
-下载到/home/目录
-
+下载到/home/目录  
+```
 [root@lb01 home]# curl -O https://codeload.github.com/94fzb/zrlog/zip/master
-
-解压，解压后的目录为：zrlog-master
-
+```  
+解压，解压后的目录为：zrlog-master  
+```
 [root@lb01 home]# ls
 git  master  mytest  test  test_java  zrlog-master
 [root@lb01 home]# 
-
-将zrlog-master目录的全部文件复制到到test_java目录中。
-
+```  
+将zrlog-master目录的全部文件复制到到test_java目录中。  
+```
 [root@lb01 home]# mv zrlog-master/* test_java/
 mv: overwrite ‘test_java/README.md’? r
 [root@lb01 home]# 
-
-进入test_java目录推送：
-
+```  
+进入test_java目录推送：  
+```
 [root@lb01 home]# cd test_java/
 [root@lb01 test_java]# git add .
 [root@lb01 test_java]# git commit -m "add zrlog" 
@@ -304,40 +304,40 @@ remote: Resolving deltas: 100% (61/61), done.
 To git@github.com:yanyuzm/test_java
    4fb58db..67c89f3  master -> master
 [root@lb01 test_java]# 
+```  
+十、安装tomcat  
 
-十、安装tomcat
+1、JDK安装  
 
-1、JDK安装
-
-在192.168.10.102机子上安装jdk+tomcat
-
+在192.168.10.102机子上安装jdk+tomcat  
+```
 [root@lb02 ~]# hostname -i
 192.168.10.102
 [root@lb02 ~]# 
+```  
+jdk使用1.8版本，安装过程省略。  
 
-jdk使用1.8版本，安装过程省略。
+2、安装tomcat  
 
-2、安装tomcat
-
-下载解压：
-
+下载解压：  
+```
 [root@lb02 ~]# curl -O https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-9/v9.0.12/bin/apache-tomcat-9.0.12.tar.gz
 [root@lb02 ~]# tar xf apache-tomcat-9.0.12.tar.gz -C /usr/local/
 [root@lb02 ~]# cd /usr/local/
 [root@lb02 local]# mv apache-tomcat-9.0.12/ tomcat9.0
 [root@lb02 local]# 
-
-配置环境变量：
-
+```  
+配置环境变量：  
+```
 [root@lb02 local]# vim /etc/profile.d/tomcat.sh
 export CATALINA_HOME=/usr/local/tomcat9.0
 export PATH=$CATALINA_HOME/bin:$PATH
 [root@lb02 local]# chmod +x /etc/profile.d/tomcat.sh
 [root@lb02 local]# source /etc/profile.d/tomcat.sh
 [root@lb02 local]# 
-
-启动tomcat:
-
+```  
+启动tomcat:  
+```
 [root@lb02 ~]# startup.sh 
 Using CATALINA_BASE:   /usr/local/tomcat9.0
 Using CATALINA_HOME:   /usr/local/tomcat9.0
@@ -346,15 +346,15 @@ Using JRE_HOME:        /usr/local/jdk1.8
 Using CLASSPATH:       /usr/local/tomcat9.0/bin/bootstrap.jar:/usr/local/tomcat9.0/bin/tomcat-juli.jar
 Tomcat started.
 [root@lb02 ~]# 
+```  
+浏览器打开：192.168.10.102:8080  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins34.jpg)  
+OK。tomcat安装成功。  
 
-浏览器打开：192.168.10.102:8080
+3、配置tomcat管理用户  
 
-OK。tomcat安装成功。
-
-3、配置tomcat管理用户
-
-修改配置文件：conf/tomcat-users.xml，添加相关用户。
-
+修改配置文件：conf/tomcat-users.xml，添加相关用户。  
+```
 [root@lb02 ~]# cd /usr/local/tomcat9.0/conf/
 [root@lb02 conf]# vim tomcat-users.xml
   <role rolename="manager"/>
@@ -365,19 +365,19 @@ OK。tomcat安装成功。
   <role rolename="manager-jmx"/>
   <role rolename="manager-status"/>
   <user username="admin" password="123456" roles="admin-gui,admin,manager-gui,manager,manager-script,manager-jmx,manager-status"/>
+```  
+修改manager配置：  
 
-修改manager配置：
-
-要想在其他机子访问，修改配置manager/META-INF/context.xml：
-
+要想在其他机子访问，修改配置manager/META-INF/context.xml：  
+```
 在allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />中添加允许访问的ip即可
 
 [root@lb02 conf]# cd ..
 [root@lb02 tomcat9.0]# vim webapps/manager/META-INF/context.xml
 allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1|192.168.*.*"/>
-
-停止Tomcat再启动：
-
+```  
+停止Tomcat再启动：  
+```
 [root@lb02 tomcat9.0]# shutdown.sh 
 Using CATALINA_BASE:   /usr/local/tomcat9.0
 Using CATALINA_HOME:   /usr/local/tomcat9.0
@@ -393,39 +393,39 @@ Using JRE_HOME:        /usr/local/jdk1.8
 Using CLASSPATH:       /usr/local/tomcat9.0/bin/bootstrap.jar:/usr/local/tomcat9.0/bin/tomcat-juli.jar
 Tomcat started.
 [root@lb02 tomcat9.0]# 
+```  
+点击首页的管理页面：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins35.jpg)  
+输入用户名和密码即可登录：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins36.jpg)  
+登录成功后如下图所示：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins37.jpg)  
+至此，tomcat安装成功。  
+十一、部署java项目-安装maven  
 
-点击首页的管理页面：
+1、下载、安装maven  
 
-输入用户名和密码即可登录：
+maven要安装在jenkins所在的机子上，前面中，jenkins安装在192.168.10.101机子上。  
 
-登录成功后如下图所示：
+下载地址：http://maven.apache.org/download.cgi  
 
-至此，tomcat安装成功。
-十一、部署java项目-安装maven
-
-1、下载、安装maven
-
-maven要安装在jenkins所在的机子上，前面中，jenkins安装在192.168.10.101机子上。
-
-下载地址：http://maven.apache.org/download.cgi
-
-下载并解压到/usr/local/目录中
-
+下载并解压到/usr/local/目录中  
+```
 [root@lb01 ~]# curl -O https://mirrors.tuna.tsinghua.edu.cn/apache/maven/maven-3/3.5.4/binaries/apache-maven-3.5.4-bin.tar.gz
 [root@lb01 ~]# tar xf apache-maven-3.5.4-bin.tar.gz -C /usr/local/
 [root@lb01 ~]#
-
-2、配置环境变量
-
+```  
+2、配置环境变量  
+```
 [root@lb01 ~]# vim /etc/profile.d/maven.sh
 export MAVEN_PATH=/usr/local/apache-maven-3.5.4
 export PATH=$MAVEN_PATH/bin:$PATH
 [root@lb01 ~]# chmod +x /etc/profile.d/maven.sh
 [root@lb01 ~]# source /etc/profile.d/maven.sh
 [root@lb01 ~]# 
-
-查看maven版本信息：
-
+```  
+查看maven版本信息：  
+```
 [root@lb01 ~]# mvn --version
 Apache Maven 3.5.4 (1edded0938998edf8bf061f1ceb3cfdeccf443fe; 2018-06-18T02:33:14+08:00)
 Maven home: /usr/local/apache-maven-3.5.4
@@ -433,71 +433,72 @@ Java version: 1.8.0_181, vendor: Oracle Corporation, runtime: /usr/local/jdk1.8/
 Default locale: en_US, platform encoding: UTF-8
 OS name: "linux", version: "3.10.0-862.el7.x86_64", arch: "amd64", family: "unix"
 [root@lb01 ~]# 
+```  
+至此，maven安装完成。  
 
-至此，maven安装完成。
+3、jenkins安装maven插件  
 
-3、jenkins安装maven插件
+浏览器打开：192.168.10.101:8080，登录成功后。  
 
-浏览器打开：192.168.10.101:8080，登录成功后。
+点击：系统管理-->全局工具配置  
 
-点击：系统管理-->全局工具配置
+设置全局文件路径，如下图：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins34.jpg)  
+新增maven，如下图：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins35.jpg)  
+配置jdk：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins36.jpg)  
+我的jdk安装路径是：/usr/local/jdk1.8  
 
-设置全局文件路径，如下图：
+配置好maven，点击保存  
+十二、部署java项目-安装插件  
 
-新增maven，如下图：
+登录jenkins之后，点击系统管理-->管理插件  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins37.jpg)  
+检查是否安装了Maven Integration plugin和Deploy to container Plugin这两个插件。如果没有安装，则需要安装。  
 
-配置jdk：
+安装成功后，重启jenkins服务。  
 
-我的jdk安装路径是：/usr/local/jdk1.8
+登录jenkins后点击新建，可以看到有maven的项目选项了：  
 
-配置好maven，点击保存
-十二、部署java项目-安装插件
+至此，插件安装成功。  
+十三、部署java项目-构建job  
 
-登录jenkins之后，点击系统管理-->管理插件
+1、创建项目  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins38.jpg)  
+创建一个maven项目，名称为：test-java  
 
-检查是否安装了Maven Integration plugin和Deploy to container Plugin这两个插件。如果没有安装，则需要安装。
+创建成功后，页面跳转到：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins39.jpg)  
+填写源码管理中的url仓库地址。  
 
-安装成功后，重启jenkins服务。
+如果仓库是私有的，必须配置用户密码等信息，如下：    
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins40.jpg)  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins41.jpg)  
+配置好ssh私钥信息后，保存，下图中选择git。  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins42.jpg)  
+Build设置：  
 
-登录jenkins后点击新建，可以看到有maven的项目选项了：
+Goals and options可以设置成：clean install -D maven.test.skip=true，也可以默认不设置；Root POM保持默认。  
 
-至此，插件安装成功。
-十三、部署java项目-构建job
+构建后操作：  
 
-1、创建项目
+添加Editable  Email Notification设置：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins43.jpg)  
+设置好之后，保存。  
 
-创建一个maven项目，名称为：test-java
+2、构建项目  
 
-创建成功后，页面跳转到：
+点击立即构建：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins44.jpg)  
+十四、部署java项目-手动安装jdk  
 
-填写源码管理中的url仓库地址。
+1、下载jdk，并解压到/usr/local/目录，然后重命名为：/usr/local/jdk1.8/  
 
-如果仓库是私有的，必须配置用户密码等信息，如下：
+jdk下载地址：https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html  
 
-配置好ssh私钥信息后，保存，下图中选择git。
-
-Build设置：
-
-Goals and options可以设置成：clean install -D maven.test.skip=true，也可以默认不设置；Root POM保持默认。
-
-构建后操作：
-
-添加Editable  Email Notification设置：
-
-设置好之后，保存。
-
-2、构建项目
-
-点击立即构建：
-
-十四、部署java项目-手动安装jdk
-
-1、下载jdk，并解压到/usr/local/目录，然后重命名为：/usr/local/jdk1.8/
-
-jdk下载地址：https://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html
-
-2、配置环境变量：
-
+2、配置环境变量：  
+```
 [root@lb01 ~]# vim /etc/profile.d/jdk.sh 
 export JAVA_HOME=/usr/local/jdk1.8
 export PATH=$PATH:$JAVA_HOME/bin
@@ -505,41 +506,41 @@ export CLASSPATH=$JAVA_HOME/lib
 
 [root@lb01 ~]# chmod +x /etc/profile.d/jdk.sh
 [root@lb01 ~]# source /etc/profile.d/jdk.sh
-
-十五、部署java项目-发布war包
+```  
+十五、部署java项目-发布war包  
 
 配置test-java工程的构建后操作：
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins45.jpg)  
+选择Deploy war/ear to a container：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins46.jpg)  
+设置如下：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins47.jpg)  
+设置访问tomcat的用户名和密码（不支持tomcat9）：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins48.jpg)  
+点击添加，然后设置如下：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins49.jpg)  
+保存退出即可。  
 
-选择Deploy war/ear to a container：
-
-设置如下：
-
-设置访问tomcat的用户名和密码（不支持tomcat9）：
-
-点击添加，然后设置如下：
-
-保存退出即可。
-
-最后，立即构建。
-
-到tomcat所在的机子（192.168.10.102）查看一下：
-
+最后，立即构建。  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins50.jpg)  
+到tomcat所在的机子（192.168.10.102）查看一下：  
+```
 [root@lb02 ~]# ls /usr/local/tomcat9.0/webapps/
 docs  examples  host-manager  manager  ROOT  zrlog-2.0.6  zrlog-2.0.6.war
 [root@lb02 ~]# 
+```  
+war包已经发布过去了。  
 
-war包已经发布过去了。
+浏览器打开：http://192.168.10.102:8080/zrlog-2.0.6。  
 
-浏览器打开：http://192.168.10.102:8080/zrlog-2.0.6。
+Jenkins中的工程构建tomcat只有8.x版本，而192.168.10.102机子装的是9.0，所以最终会报错。  
 
-Jenkins中的工程构建tomcat只有8.x版本，而192.168.10.102机子装的是9.0，所以最终会报错。
-
-换回8.x版本之后，重新构建即可。
+换回8.x版本之后，重新构建即可。  
 
 tomcat8.5下载地址：https://mirrors.tuna.tsinghua.edu.cn/apache/tomcat/tomcat-8/v8.5.34/bin/apache-tomcat-8.5.34.tar.gz
 
-192.168.10.102安装tomcat8.5成功，并配置好之后
-
+192.168.10.102安装tomcat8.5成功，并配置好之后  
+```
 [root@lb02 local]# startup.sh 
 Using CATALINA_BASE:   /usr/local/tomcat8.5
 Using CATALINA_HOME:   /usr/local/tomcat8.5
@@ -548,7 +549,8 @@ Using JRE_HOME:        /usr/local/jdk1.8
 Using CLASSPATH:       /usr/local/tomcat8.5/bin/bootstrap.jar:/usr/local/tomcat8.5/bin/tomcat-juli.jar
 Tomcat started.
 [root@lb02 local]# 
-
+```  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins51.jpg)
 重新构建test-java工程。
 
 部分构建信息如下：
@@ -592,5 +594,5 @@ Finished: SUCCESS
 OK，成功。
 
 浏览器再次打开：http://192.168.10.102:8080/zrlog-2.0.6/
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins52.jpg)
 OK，发布成功。
