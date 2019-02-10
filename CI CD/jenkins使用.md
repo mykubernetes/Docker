@@ -1,28 +1,24 @@
 浏览器打开：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins1.jpg)  
 输入密码，初始密码保存在：/var/lib/jenkins/secrets/initialAdminPassword  
-
 点击：继续，进入：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins2.jpg)  
 单击安装推荐插件。进入插件安装界面：  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins3.jpg)
 
-这个安装过程有有点慢。  
-三、了解Jenkins  
 
 安装插件成功后，会进入创建管理员用户界面：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins4.jpg)
 暂时跳过设置url，进入：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins5.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins6.jpg)
 配置文件： /etc/sysconfig/jenkins  
-
 jenkins主目录：/var/lib/jenkins/  
+
 四、发布php代码  
 （1）密钥的设置  
-
 1、安装Publish  Over SSH、Git plugin插件  
-
 登录jenkins，系统管理-->插件管理-->可选插件。  
-
 安装Publish  Over SSH、Git plugin插件。  
 
 安装完成后要重启jenkins服务。  
@@ -38,18 +34,16 @@ Enter file in which to save the key (/root/.ssh/id_rsa):
 Overwrite (y/n)? 
 [root@lb01 ~]# 
 ```  
-私钥：/root/.ssh/id_rsa。  
+私钥：/root/.ssh/id_rsa  
 
 3、配置Jenkins的SSH密钥  
-
 私钥：  
-
 点击系统管理-->系统设置，找到Publish Over SSH  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins7.jpg)
 Passphrase：留空，Path  to key：留空，把101的私钥复制黏贴到key  
 
 点击：新增。  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins8.jpg)
 如果有多台则继续添加增加。  
 
 最后点击保存。  
@@ -59,41 +53,39 @@ Passphrase：留空，Path  to key：留空，把101的私钥复制黏贴到key
 同时将101机子的公钥内容（/root/.ssh/id_rsa.pub ）复制到102的/root/.ssh/authorized_keys  
 
 这里添加了两个ssh：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins9.jpg)
 点击：Test Configuration，均显示Sucess。OK，配置成功。  
 
 SSH密钥设置思路：  
-
-    1、jenkins端生成SSH密钥  
-
-    2、将jenkins生成的私钥内容（/.ssh/id_rsa）复制到Publish Over SSH中的key  
-
-    3、将jenkins端的公钥（/root/.ssh/id_rsa.pub）内容复制黏贴到客户端的/root/.ssh/authorized_keys文件中。  
-
+```
+1、jenkins端生成SSH密钥  
+2、将jenkins生成的私钥内容（/.ssh/id_rsa）复制到Publish Over SSH中的key  
+3、将jenkins端的公钥（/root/.ssh/id_rsa.pub）内容复制黏贴到客户端的/root/.ssh/authorized_keys文件中。  
+```
 （2）新建一个任务  
-
 首页点击新建任务。  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins10.jpg)
 填写相关信息：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins11.jpg)
 选择构建自由风格的软件项目，然后点确定。  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins12.jpg)
 源码管理选择git，地址自己注册一个。  
 
 构建：  
 
 构建：选择Send files  or execute command over SSH  
 
-**/**：表示全部。  
-
+``` **/**：表示全部 ```     
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins13.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins14.jpg)
 根据实际情况设置  
 
 最后，点击保存。  
 
 构建：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins15.jpg)
 查看控制台输出：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins16.jpg)
 最后显示：SUCESS。  
 
 到lb01、lb02查看一下：  
@@ -119,7 +111,7 @@ drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
 提交后。  
 
 回到jenkins点击立即构建  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins17.jpg)
 构建后，到lb01查看一下：  
 
 [root@lb01 ~]# cat /tmp/jenkins_test/README.md   
@@ -144,15 +136,15 @@ drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
 依次点击：系统管理-->系统设置-->Jenkins Location，向下拉找到邮件通知，然后设置。  
 
 系统管理员邮件地址和发邮件的邮箱要保持一致。  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins18.jpg)  
 设置好之后，点击测试一下。提示：Email was successfully sent，OK，配置成功。  
 
 最后点击保存即可。  
 
 配置好之后，回到test_php工程里配置：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins19.jpg)  
 选择：构建后操作--> E-mail  Notification：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins20.jpg)
 设置之后，修改一下test_php工程的文件，比如：  
 
 [root@lb02 ~]# ls /tmp/lb02/README.md  
@@ -161,7 +153,8 @@ drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
 [root@lb02 ~]#   
 
 重新构建项目，看看会不会收到邮件通知：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins21.jpg)  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins22.jpg)
 不过：这个邮件通知，只有在构建失败的时候才会发送。如果构建成功，则不会发送邮件。  
 六、插件email-ext  
 
@@ -172,26 +165,26 @@ drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
 设置：  
 
 依次点击：系统管理-->系统设置-->Extension E-mail Notification。  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins23.jpg)  
 往下拉，点击：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins24.jpg)
 勾选：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins25.jpg)
 最后，把前面设置的：邮件通知，删除，然后保存退出即可。  
 
 （2）修改test_php的配置：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins26.jpg)
 删除E-mail Notification的配置：  
-
- 
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins27.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins28.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins29.jpg)
 （3）测试  
 
 前面中，/tmp/lb02/README.md文件添加了i权限，现在先去掉此权限，再测试。  
-
+```
 [root@lb02 ~]# chattr -i /tmp/lb02/README.md  
 [root@lb02 ~]#   
-
+```  
 重新构建：  
 
 七、破解管理员密码  
@@ -212,7 +205,7 @@ drwxr-xr-x 2 nobody nobody 151 Sep 11 19:54 /tmp/lb02/
 3、浏览器打开：192.168.10.101:8080  
 
 无需登录，即可进入首页：  
-
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins30.jpg)
 4、点击：系统管理-->全局安全配置  
 
 勾选“启用安全“，点选“Jenkins专有用户数据库”，并点击“保存”；  
