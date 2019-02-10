@@ -1,8 +1,6 @@
 ssh秘钥配置
 =========
 1、安装Publish  Over SSH、Git plugin插件  
-安装Publish  Over SSH、Git plugin插件。  
-安装完成后要重启jenkins服务。  
 2、生产秘钥对  
 ```
 # ssh-keygen 
@@ -13,8 +11,10 @@ Overwrite (y/n)?
 ```  
 3、配置Jenkins的SSH密钥  
 点击系统管理-->系统设置，找到Publish Over SSH  
+把私钥复制到key  
+
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins7.jpg)
-Passphrase：留空，Path  to key：留空，把101的私钥复制黏贴到key  
+
 
 
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins8.jpg)
@@ -22,7 +22,7 @@ Passphrase：留空，Path  to key：留空，把101的私钥复制黏贴到key
 
 
 
-同时将101机子的公钥内容（/root/.ssh/id_rsa.pub ）复制到102的/root/.ssh/authorized_keys  
+将公钥内容（/root/.ssh/id_rsa.pub ）复制到其他节点/root/.ssh/authorized_keys  
 
 这里添加了两个ssh：  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins9.jpg)
