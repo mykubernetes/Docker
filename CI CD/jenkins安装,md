@@ -1,4 +1,33 @@
 jenkins安装
 ===========
-1、下载安装包
+1、下载yum源  
 https://mirrors.tuna.tsinghua.edu.cn/jenkins/redhat/  
+``` wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo ```  
+2、安装jdk 1.8以上  
+
+3、安装jenkins  更改用户可选
+```
+# yum install jenkins -y 
+# useradd deploy
+# vim /etc/sysconfig/jenkins
+  JENKINS_USER="deploy"
+  JENKINS_PORT="8080"
+#chown -R deploy:deploy /var/lib/jenkins
+#chown -R deploy:deploy /var/log/jenkins
+```  
+4、配置jenkins JDK路径  
+```
+vim /etc/init.d/jenkins    #在candidates中第一行添加java路径
+candidates=" 
+/opt/soft/jdk1.8.0_60/bin/java
+/etc/alternatives/java
+/usr/lib/jvm/java-1.6.0/bin/java
+/usr/lib/jvm/jre-1.6.0/bin/java
+/usr/lib/jvm/java-1.7.0/bin/java
+/usr/lib/jvm/jre-1.7.0/bin/java
+/usr/lib/jvm/java-1.8.0/bin/java
+/usr/lib/jvm/jre-1.8.0/bin/java
+/usr/bin/java
+```  
+5、启动jenkins  
+``` systemctl start jenkins ```
