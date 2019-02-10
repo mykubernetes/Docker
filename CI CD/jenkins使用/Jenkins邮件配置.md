@@ -22,15 +22,16 @@ Jenkins邮件配置
 依次点击：系统管理-->系统设置-->Extension E-mail Notification。  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins23.jpg)  
 往下拉，点击：  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins24.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins24.jpg)  
 勾选：  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins25.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins25.jpg)  
 最后，把前面设置的：邮件通知，删除，然后保存退出即可。  
 
 （2）修改test_php的配置：  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins26.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins26.jpg)  
 删除E-mail Notification的配置：  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins27.jpg)
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins28.jpg)
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins29.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins27.jpg)  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins28.jpg)  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins29.jpg)  
 （3）测试  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins30.jpg)  
