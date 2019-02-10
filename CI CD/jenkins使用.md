@@ -58,17 +58,17 @@ Passphrase：留空，Path  to key：留空，把101的私钥复制黏贴到key
 
 SSH密钥设置思路：  
 ```
-1、jenkins端生成SSH密钥  
-2、将jenkins生成的私钥内容（/.ssh/id_rsa）复制到Publish Over SSH中的key  
-3、将jenkins端的公钥（/root/.ssh/id_rsa.pub）内容复制黏贴到客户端的/root/.ssh/authorized_keys文件中。  
+1、jenkins端生成SSH密钥
+2、将jenkins生成的私钥内容（/.ssh/id_rsa）复制到Publish Over SSH中的key
+3、将jenkins端的公钥（/root/.ssh/id_rsa.pub）内容复制黏贴到客户端的/root/.ssh/authorized_keys文件中。
 ```
 （2）新建一个任务  
 首页点击新建任务。  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins10.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins10.jpg)  
 填写相关信息：  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins11.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins11.jpg)  
 选择构建自由风格的软件项目，然后点确定。  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins12.jpg)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins12.jpg)  
 源码管理选择git，地址自己注册一个。  
 
 构建：  
