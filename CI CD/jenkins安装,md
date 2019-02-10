@@ -30,4 +30,11 @@ candidates="
 /usr/bin/java
 ```  
 5、启动jenkins  
-``` systemctl start jenkins ```
+``` systemctl start jenkins ```  
+6、网页访问  
+192.168.1.1:8080  
+7、根据网页提示密码路径查看密码  
+```
+# cat /var/lib/jenkins/secrets/initialAdminPassword
+073543b7bd5c4935b07b4a294c87e5bc
+```  
