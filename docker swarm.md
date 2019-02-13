@@ -59,6 +59,6 @@ $ docker swarm join-token manager
     To add a manager to this swarm, run the following command:
     docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-0koz1b98sco8r5cn3g61eahnu 192.168.99.100:2377
 
-$ docker-machine ssh manager2 "docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-0koz1b98sco8r5cn3g61eahnu 192.168.99.100:2377"
+$ docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-0koz1b98sco8r5cn3g61eahnu 192.168.99.100:2377
 This node joined a swarm as a manager.
 ```
