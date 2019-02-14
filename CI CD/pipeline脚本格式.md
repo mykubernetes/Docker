@@ -49,6 +49,7 @@ pipeline {
                             echo "test.properties is empty"
                         fi
                         """
+                        echo "[INFO] Build finished..."
                 }
             }
         }    
