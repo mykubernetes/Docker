@@ -51,4 +51,38 @@ pipeline {
                         """
                 }
             }
+        }    
+}    
+```
+
+pipeline大概格式如下
+```
+pipeline {
+       agent {node {lable 'node01'}}                    #jenkins运行的的主机
+       environment {                                    #设置全局环境变量     
+       PATH="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/root/bin"
+       }
+       stages {                                         #groovy代码
+              parameters {                              #参数构建选项
+                     choice                             #选项参数
+                     string                             #文本参数
+              }
+        }
+       stages {                                        #groovy代码
+              stage {                                  #groovy代码
+                     steps{                            #定义shell脚本
+                     sh """
+                     echo "[INFO] Done..."
+                     """
+                     }
+              }
+              stage {                                  #groovy代码
+                     steps{                            #定义shell脚本
+                     sh """
+                     echo "[INFO] Done..."
+                     """
+                     }
+              }
+        }
+}        
 ```
