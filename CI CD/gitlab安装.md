@@ -5,10 +5,10 @@ gitlab安装
 1、安装依赖库  
 ``` yum install curl policycoreutils openssh-server openssh-clients postfix -y ```  
 2、下载gitlab软件  
-``` https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/gitlab-ce-10.2.3-ce.0.el7.x86_64.rpm ```  
+``` wget https://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el7/gitlab-ce-10.2.3-ce.0.el7.x86_64.rpm ```  
 ``` rpm -ivh gitlab-ce-10.2.3-ce.0.el7.x86_64.rpm ```  
 3、启动邮件  
-``` systemctl start postfix ；systemctl enable postfix ```  
+``` systemctl start postfix ; systemctl enable postfix ```  
 4、初始化gitlab   
 配置 gitlab 域名：  
 ```
