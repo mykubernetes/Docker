@@ -20,7 +20,7 @@ pipeline {
                 steps{
                       sh 'git config --global http.sslVerify false'
                       dir ("${env.WORKSPACE}") {
-                          git branch: 'master', credentialsID:"9aa11671-aab9-47c7-a5e1-a4be46bf587", url: 'https://root@gitlab.example.com/root/test-repo.git'
+                          git branch: 'master', credentialsId:"9aa11671-aab9-47c7-a5e1-a4be46bf587", url: 'https://root@gitlab.example.com/root/test-repo.git'
                       }
                  }
             }
