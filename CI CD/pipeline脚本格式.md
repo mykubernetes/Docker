@@ -57,8 +57,9 @@ pipeline {
 }    
 ```
 
-pipeline大概格式如下
+pipeline大概格式如下  
 ```
+#!groovy
 pipeline {
        agent {node {lable 'node01'}}                    #jenkins运行的的主机
        environment {                                    #设置全局环境变量     
