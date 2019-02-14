@@ -13,7 +13,7 @@ pipeline {
                 description: 'choos deploy environment',
                 name: 'deploy_env'
              )
-             string (name: 'version', defaultValue: '1.0.0', description 'build version')
+             string (name: 'version', defaultValue: '1.0.0', description: 'build version')
         }
        stages {
             stage("Checkout test repo") {
