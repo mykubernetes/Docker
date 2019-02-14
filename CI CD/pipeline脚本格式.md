@@ -67,8 +67,8 @@ pipeline {
        }
        stages {                                         #groovy代码
               parameters {                              #参数构建选项
-                     choice （...)                      #选项参数
-                     string  (...)                      #文本参数
+                     choice （...),                     #选项参数
+                     string  (...),                     #文本参数
               }
         }
        stages {                                        #groovy代码
