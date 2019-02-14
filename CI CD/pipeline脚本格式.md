@@ -78,7 +78,7 @@ pipeline {
               }
               stage("步骤名") {                         #groovy代码
                      steps{                            #定义shell脚本
-                     sh """
+                     sh """                            #shell语法
                      echo "[INFO] Done..."
                      """
                      }
