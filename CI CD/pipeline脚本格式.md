@@ -50,6 +50,7 @@ pipeline {
                         fi
                         """
                         echo "[INFO] Build finished..."
+                    }
                 }
             }
         }    
