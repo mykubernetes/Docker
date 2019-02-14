@@ -64,19 +64,19 @@ pipeline {
        }
        stages {                                         #groovy代码
               parameters {                              #参数构建选项
-                     choice                             #选项参数
-                     string                             #文本参数
+                     choice （...)                      #选项参数
+                     string  (...)                      #文本参数
               }
         }
        stages {                                        #groovy代码
-              stage {                                  #groovy代码
+              stage("步骤名") {                        #groovy代码
                      steps{                            #定义shell脚本
-                     sh """
-                     echo "[INFO] Done..."
-                     """
+                     sh 'git config --global http.sslVerify false'         
+                     dir ("${env.WORKSPACE}") {        #工作目录
+                          git branch: 'master', credentialsID:"凭证唯一ID", url: 'https://git路径'
                      }
               }
-              stage {                                  #groovy代码
+              stage("步骤名") {                         #groovy代码
                      steps{                            #定义shell脚本
                      sh """
                      echo "[INFO] Done..."
