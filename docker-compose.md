@@ -42,8 +42,8 @@ services:
 3、启动删除和运行停止docker-compose  
 ``` 
 docker-compose up -f docker-compose.yml
-docker-compose up          #启动
-docker-compose down     #删除
-docker-compose start       #运行
-docker-compose stop       #停止
+docker-compose up             #启动
+docker-compose down           #删除
+docker-compose start          #运行
+docker-compose stop           #停止
 ```  
