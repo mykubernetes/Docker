@@ -104,7 +104,7 @@ verify: Service converged
 demo
 ```  
 
-6、更新
+6、更新  
 ``` # docker service update --image mysql:v2.0 mysql ```
 
 三、docker stack  
