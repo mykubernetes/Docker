@@ -8,7 +8,7 @@ https://github.com/goharbor/harbor/releases
 ``` # tar xvf harbor-offline-installer-v1.4.0.tgz -C /op/module ```  
 4、配置文件一般改这三项  
 ```
-vim /opt/module/harbor/harbor.cfg
+# vim /opt/module/harbor/harbor.cfg
 hostname = node01.com
 harbor_admin_password = Harbor12345
 db_password = root123
@@ -16,14 +16,14 @@ db_password = root123
 5、修改docker-compose.myl配置仓库存储路径  
 
 6、安装docker-compose命令  
-``` yum install -y docker-compose ```  
+``` # yum install -y docker-compose ```  
 7、执行安装脚本  
 ``` 
-cd /opt/module/harbor/
-./install.sh
+# cd /opt/module/harbor/
+# ./install.sh
+```  
+8、启动停止  
 ```
-8、启动停止
-```
-docker-compose start
-docker-compose stop
-```
+# docker-compose start
+# docker-compose stop
+```  
