@@ -77,14 +77,14 @@ This node joined a swarm as a manager.
 2、查看创建的service  
 ``` 
 # docker service ls 
-ID                     NAME           MODE         REPLICAS           IMAGE             PORTS
-xf2s18b0ib90    mysql        replicated         1/1              busybox:latest    
+ID                   NAME           MODE         REPLICAS           IMAGE             PORTS
+xf2s18b0ib90         mysql        replicated         1/1           busybox:latest    
 ```  
 3、查看service的详细情况  
 ```
 # docker service ps demo
-ID                         NAME     IMAGE                    NODE           DESIRED  STATE      CURRENT STATE         ERROR
-b7feqwz2c029    mysql.1    busybox:latest    swarm-manager       Running        Running 2 minute ago
+ID                NAME         IMAGE              NODE         DESIRED  STATE       CURRENT STATE          ERROR
+b7feqwz2c029     mysql.1    busybox:latest    swarm-manager       Running          Running 2 minute ago
 ```  
 4、水平扩展service  
 ```
