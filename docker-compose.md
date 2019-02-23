@@ -2,13 +2,14 @@ docker-compose
 ============
 1、docker-compose安装  
 ```
-wget https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-Linux-x86_64
-chmod +x docker-compose-Linux-x86_64
-mv docker-compose-Linux-x86_64 /usr/bin/docker-compose
+# wget https://github.com/docker/compose/releases/download/1.24.0-rc1/docker-compose-Linux-x86_64
+# chmod +x docker-compose-Linux-x86_64
+# mv docker-compose-Linux-x86_64 /usr/bin/docker-compose
 ```  
 
 2、编写docker-compose  
 ```
+# cat docker-compose.yml
 version: '3'
 services:
   wordpress:
