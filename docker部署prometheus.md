@@ -152,7 +152,42 @@ groups:
       description: "mysql max connect is Over connections"
 ```  
 
-五、部署grafana  
+五、配置邮件告警(支持钉钉、微信等）
+--------------
+``` 
+# docker ps
+# docker exec -it prom_alertmanager /bin/sh
+
+#cat /etc/alertmanager/alertmanager.yml 
+global:
+  resolve_timeout: 5m
+  smtp_smarthost: 'smtp.163.cn:587'
+  smtp_from: 'user@163.com'
+  smtp_auth_username: 'user@163.com'
+  smtp_auth_password: '123456'
+route:
+  group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'email'
+receivers:
+- name: 'email'
+  email_configs:
+  - to: 'user01@163.com'
+
+- name: 'webhook'
+  webhook_configs:
+  - url: 'http://127.0.0.1:5001/'
+inhibit_rules:
+  - source_match:
+      severity: 'critical'
+    target_match:
+      severity: 'warning'
+    equal: ['alertname', 'dev', 'instance']
+```
+
+六、部署grafana  
 --------------
 1、拉取镜像  
 ``` # docker pull grafana/grafana ```  
