@@ -187,6 +187,10 @@ inhibit_rules:
     equal: ['alertname', 'dev', 'instance']
 ```
 
+更多官方和第三方数据收集插件  
+https://prometheus.io/docs/instrumenting/exporters/  
+
+
 六、部署grafana  
 --------------
 1、拉取镜像  
