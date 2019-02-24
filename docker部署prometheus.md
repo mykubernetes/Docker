@@ -112,8 +112,7 @@ mysql> flush privileges;
 vim /opt/prometheus/data/prometheus.yml
 alerting:
   alertmanagers:
-   - static_configs:
-     - targets:['192.168.101.66:9093']
+   - static_configs: targets:['192.168.101.66:9093']
 
 rule_file:
 	- "/data/rule.yml"
