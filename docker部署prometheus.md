@@ -73,13 +73,17 @@ http://192.168.101.66:9090
 ``` # docker restart prometheus ```  
 
 三、添加myslq监控  
+----------------
 1、拉取镜像  
 ``` # docker pull prom/mysqld-exporter ```  
 
-2、授权数据库用户
-``` Mysql> grant process,replication client,select on *.* to 'exporter'@'%' identified by 'exporter'; ```  
+2、授权数据库用户  
+``` 
+mysql> grant process,replication client,select on *.* to 'exporter'@'%' identified by 'exporter'; 
+mysql> flush privileges;
+```  
 
-3、运行mysql-exporter
+3、运行mysql-exporter  
 ``` docker run -d -p 9104:9104 -e DATA_SOURCE_NAME="exporter:exporter@(172.24.64.55:3307)/" prom/mysql-exporter ```  
 
 
