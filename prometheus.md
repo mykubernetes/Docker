@@ -1,6 +1,8 @@
 docker部署prometheus
 ===================
 
+一、部署prometheus
+------------------
 1、拉取镜像  
 ``` # docker pull prom/prometheus ```  
 
@@ -48,3 +50,20 @@ prom/prometheus \
 --storage.tsdb.path=/data/
 ```  
 
+二、部署node_exporter  
+------------------
+1、拉取镜像  
+``` # docker pull prom/node-exporter ```  
+
+2、运行exporter  
+``` # docker run -d -p 9100:9100 prom/node-exporte ```  
+
+3、修改prometheus配置文件添加exportz主机  
+```
+tail -n 5 /opt/prometheus/data/prometheus.yml
+- job_name: 'node01'
+    static_configs:
+    - targets: ['192.168.101.66:9100']
+      labels:
+        host: 'node01'
+```  
