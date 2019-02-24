@@ -118,6 +118,39 @@ rule_file:
 	- "/data/rule.yml"
 ```  
 
+4、定义告警出发条件  
+```
+# cat /opt/prometheus/data/rule.yml 
+groups:
+- name: test-rule
+  rules:
+  - alert: NodeMemoryUsage
+    #expr: (node_memory_MemTotal - (node_memort_MemFree+node_memory_Buffers+node_memory_Cached )) / node_memory_MemTotal * 100 > 80
+    expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers + node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 40
+    for: 1m
+    labels:
+      team: node
+    annotations:
+      summary: "{{$labels.instance}}: High Memory useage detected"
+      description: "{{$labels.instance}} Memory usage is above 80% (current value is: {{ $value }}"
+  - alert: InstanceDown
+    expr: up == 0
+    for: 1m
+    labels:
+      team: node
+    annotations:
+      summary: "Instance {{$labels.instance}} down"
+      description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than 5 minutes."
+
+  - alert: MysqlConnect
+    expr: mysql_global_status_threads_connected > 1
+    for: 1m
+    labels:
+      team: node
+    annotations:
+      summary: "mysql max connect is warnning"
+      description: "mysql max connect is Over connections"
+```  
 
 五、部署grafana  
 --------------
