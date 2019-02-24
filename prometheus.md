@@ -9,7 +9,7 @@ docker部署prometheus
 
 3、创建prometheus存储目录  
 ```
-# mkdir -p /opt/prometheus/data 
+# mkdir -p /opt/prometheus/{data,config} 
 # chown -R prometheus.prometheus prometheus
 ```  
 
@@ -68,7 +68,7 @@ docker run -d --name=prometheus \
 	-p 9090:9090 \
 	-v /opt/prometheus/data/:/data/ \
 	prom/prometheus \
-	--config.file=/data/prometheus.yml \
-	--storage.tsdb.path=/data/
+	--config.file=/opt/prometheus/config/prometheus.yml \
+	--storage.tsdb.path=/opt/prometheus/data/
 ```  
 
