@@ -133,6 +133,7 @@ groups:
     annotations:
       summary: "{{$labels.instance}}: High Memory useage detected"
       description: "{{$labels.instance}} Memory usage is above 80% (current value is: {{ $value }}"
+      
   - alert: InstanceDown
     expr: up == 0
     for: 1m
