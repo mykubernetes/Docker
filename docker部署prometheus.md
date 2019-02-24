@@ -49,7 +49,8 @@ prom/prometheus \
 --config.file=/data/prometheus.yml \
 --storage.tsdb.path=/data/
 ```  
-
+6、登录web界面查看  
+http://192.168.101.66:9090  
 二、部署node_exporter  
 ------------------
 1、拉取镜像  
@@ -60,10 +61,23 @@ prom/prometheus \
 
 3、修改prometheus配置文件添加exportz主机  
 ```
-tail -n 5 /opt/prometheus/data/prometheus.yml
+# tail -n 5 /opt/prometheus/data/prometheus.yml
 - job_name: 'node01'
     static_configs:
     - targets: ['192.168.101.66:9100']
       labels:
         host: 'node01'
 ```  
+4、重启prometheus  
+``` # docker restart prometheus ```  
+
+三、部署grafana  
+--------------
+1、拉取镜像  
+``` # docker pull grafana/grafana ```  
+
+2、运行grafana  
+``` # docker run -d --name=grafana -p 3000:3000 grafana/grafana ```  
+
+3、登录web  
+http://192.168.101.66:3000  
