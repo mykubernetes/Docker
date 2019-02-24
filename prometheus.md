@@ -9,7 +9,7 @@ docker部署prometheus
 
 3、创建prometheus存储目录  
 ```
-# mkdir -p /opt/prometheus/{data,config} 
+# mkdir -p /opt/prometheus/data
 # chown -R prometheus.prometheus prometheus
 ```  
 
@@ -35,14 +35,16 @@ $ cat /etc/prometheus/prometheus.yml    复制
 $ exit
 vim /opt/prometheus/config/prometheus.yml   粘贴
 注意：粘贴文件的时候按：set paste 否则格式显示不正常
+# docker stop prometheus
+# docker rm prometheus
 ```  
+
 5、运行prometheus  
 ```
-docker run -d --name=prometheus \
-	-p 9090:9090 \
-	-v /opt/prometheus/data/:/data/ \
-	prom/prometheus \
-	--config.file=/opt/prometheus/config/prometheus.yml \
-	--storage.tsdb.path=/opt/prometheus/data/
+# docker run -d --name=prometheus -p 9090:9090 \
+-v /opt/prometheus/data/:/data/ \
+prom/prometheus \
+--config.file=/data/prometheus.yml \
+--storage.tsdb.path=/data/
 ```  
 
