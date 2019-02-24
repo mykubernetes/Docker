@@ -84,7 +84,7 @@ mysql> flush privileges;
 ```  
 
 3、运行mysql-exporter  
-``` # docker run -d -p 9104:9104 -e DATA_SOURCE_NAME="exporter:exporter@(192.168.101.67:3306)/" prom/mysqld-exporter ```  
+``` # docker run -d --name=prom_mysql -p 9104:9104 -e DATA_SOURCE_NAME="exporter:exporter@(192.168.101.67:3306)/" prom/mysqld-exporter ```  
 
 4、编辑prometheus 服务端配置文件  
 ```
@@ -99,7 +99,28 @@ mysql> flush privileges;
 5、重启服务端  
 ``` # docker restart prometheus ```  
 
-四、部署grafana  
+四、部署告警  
+------------
+1、拉取镜像  
+``` # docker pull prom/alertmanager ```  
+
+2、运行alertmanager  
+``` # docker run -d --name=prom_alertmanager -p 9093:9093 prom/alertmanager ```  
+
+3、编辑prometheus 服务端配置文件  
+```
+vim /opt/prometheus/data/prometheus.yml
+alerting:
+  alertmanagers:
+   - static_configs:
+     - targets:['192.168.101.66:9093']
+
+rule_file:
+	- "/data/rule.yml"
+```  
+
+
+五、部署grafana  
 --------------
 1、拉取镜像  
 ``` # docker pull grafana/grafana ```  
