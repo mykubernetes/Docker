@@ -125,8 +125,7 @@ groups:
 - name: test-rule
   rules:
   - alert: NodeMemoryUsage
-    #expr: (node_memory_MemTotal - (node_memort_MemFree+node_memory_Buffers+node_memory_Cached )) / node_memory_MemTotal * 100 > 80
-    expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Buffers + node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 40
+    expr: (node_memory_MemTotal_bytes - (node_memory_Buffers_bytes + node_memory_Cached_bytes + node_memory_MemFree_bytes )) / node_memory_MemTotal_bytes *100 > 80
     for: 1m
     labels:
       team: node
