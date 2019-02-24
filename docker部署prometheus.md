@@ -84,11 +84,22 @@ mysql> flush privileges;
 ```  
 
 3、运行mysql-exporter  
-``` docker run -d -p 9104:9104 -e DATA_SOURCE_NAME="exporter:exporter@(172.24.64.55:3307)/" prom/mysql-exporter ```  
+``` # docker run -d -p 9104:9104 -e DATA_SOURCE_NAME="exporter:exporter@(192.168.101.67:3306)/" prom/mysqld-exporter ```  
 
+4、编辑prometheus 服务端配置文件  
+```
+# tail -n 5 prometheus.yml 
+  - job_name: 'mysql'
+    static_configs:
+    - targets: ['192.168.101.67:9104']
+      labels:
+        host: 'node02'
+```  
 
+5、重启服务端  
+``` # docker restart prometheus ```  
 
-三、部署grafana  
+四、部署grafana  
 --------------
 1、拉取镜像  
 ``` # docker pull grafana/grafana ```  
