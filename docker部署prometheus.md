@@ -83,15 +83,15 @@ http://192.168.101.66:9090
 3、登录web  
 http://192.168.101.66:3000  
 1)添加数据源  
-![image]https://github.com/mykubernetes/linux-install/blob/master/image/grafana1.png  
-![image]https://github.com/mykubernetes/linux-install/blob/master/image/grafana2.png  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/grafana1.png)  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/grafana2.png)  
 
 2)导入模板可去官网查找相关模板  
 https://grafana.com/dashboards  
-![image]https://github.com/mykubernetes/linux-install/blob/master/image/grafana4.png  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/grafana4.png)  
 
 3)添加模板  
-![image]https://github.com/mykubernetes/linux-install/blob/master/image/grafana3.png  
-![image]https://github.com/mykubernetes/linux-install/blob/master/image/grafana5.png  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/grafana3.png)  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/grafana5.png)  
 
 
