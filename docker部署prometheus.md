@@ -49,7 +49,11 @@ prom/prometheus \
 --config.file=/data/prometheus.yml \
 --storage.tsdb.path=/data/
 ```  
-6、登录web界面查看  
+
+6、服务发现  
+https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubernetes_sd_config  
+
+7、登录web界面查看  
 http://192.168.101.66:9090  
 
 二、部署node_exporter  
@@ -101,6 +105,8 @@ mysql> flush privileges;
 
 四、部署告警  
 ------------
+
+https://github.com/prometheus/alertmanager/releases  
 1、拉取镜像  
 ``` # docker pull prom/alertmanager ```  
 
@@ -185,14 +191,58 @@ inhibit_rules:
     target_match:
       severity: 'warning'
     equal: ['alertname', 'dev', 'instance']
+```  
+
+参考文档  
+使用文档：https://prometheus.io/docs/guides/node-exporter/  
+GitHub：https://github.com/prometheus/node_exporter  
+exporter列表：https://prometheus.io/docs/instrumenting/exporters/ 
+
+性能指标计算  
+```
+CPU使用率：  
+100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)  
+内存使用率：  
+100 - (node_memory_MemFree_bytes+node_memory_Cached_bytes+node_memory_Buffers_bytes) / node_memory_MemTotal_bytes * 100  
+磁盘使用率：  
+100 - (node_filesystem_free_bytes{mountpoint="/",fstype=~"ext4|xfs"} / node_filesystem_size_bytes{mountpoint="/",fstype=~"ext4|xfs"} * 100)  
 ```
 
-更多官方和第三方数据收集插件  
-https://prometheus.io/docs/instrumenting/exporters/  
 
+k8s集群中
+```
+cAdvisor（Container Advisor）用于收集正在运行的容器资源使用和性能信息
+https://github.com/google/cadvisor  
 
+kubelet的节点使用cAdvisor提供的metrics接口获取该节点所  
+有容器相关的性能指标数据。  
+暴露接口地址：  
+https://NodeIP:10255/metrics/cadvisor  
+https://NodeIP:10250/metrics/cadvisor  
+
+kube-state-metrics采集了k8s中各种资源对象的状态信息：
+kube_daemonset_*
+kube_deployment_*
+kube_job_*
+kube_namespace_*
+kube_node_*
+kube_persistentvolumeclaim_*
+kube_pod_container_*
+kube_pod_*
+kube_replicaset_*
+kube_service_*
+kube_statefulset_*
+
+推荐模板：
+• 集群资源监控：3119
+• 资源状态监控 ：6417
+• Node监控 ：9276
+```
 六、部署grafana  
 --------------
+
+官网下载  
+https://grafana.com/grafana/download  
 1、拉取镜像  
 ``` # docker pull grafana/grafana ```  
 
