@@ -76,6 +76,19 @@ http://192.168.101.66:9090
 4、重启prometheus  
 ``` # docker restart prometheus ```  
 
+5、性能指标计算  
+```
+CPU使用率：  
+100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)  
+内存使用率：  
+100 - (node_memory_MemFree_bytes+node_memory_Cached_bytes+node_memory_Buffers_bytes) / node_memory_MemTotal_bytes * 100  
+磁盘使用率：  
+100 - (node_filesystem_free_bytes{mountpoint="/",fstype=~"ext4|xfs"} / node_filesystem_size_bytes{mountpoint="/",fstype=~"ext4|xfs"} * 100)  
+```  
+
+6、推荐node的grafana模板  
+https://grafana.com/dashboards/9276  
+
 三、添加myslq监控  
 ----------------
 1、拉取镜像  
@@ -102,6 +115,9 @@ mysql> flush privileges;
 
 5、重启服务端  
 ``` # docker restart prometheus ```  
+
+6、推荐mysql的grafana模板  
+https://grafana.com/dashboards/7362  
 
 四、部署告警  
 ------------
@@ -197,17 +213,6 @@ inhibit_rules:
 使用文档：https://prometheus.io/docs/guides/node-exporter/  
 GitHub：https://github.com/prometheus/node_exporter  
 exporter列表：https://prometheus.io/docs/instrumenting/exporters/ 
-
-性能指标计算  
-```
-CPU使用率：  
-100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)  
-内存使用率：  
-100 - (node_memory_MemFree_bytes+node_memory_Cached_bytes+node_memory_Buffers_bytes) / node_memory_MemTotal_bytes * 100  
-磁盘使用率：  
-100 - (node_filesystem_free_bytes{mountpoint="/",fstype=~"ext4|xfs"} / node_filesystem_size_bytes{mountpoint="/",fstype=~"ext4|xfs"} * 100)  
-```
-
 
 k8s集群中
 ```
