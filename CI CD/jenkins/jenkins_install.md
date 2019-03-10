@@ -9,10 +9,12 @@ mkdir /opt/jenkins
 chown -R  jenkins.jenkins /opt/jenkins
 ```  
 3、启动jenkins服务  
-``` docker run -d --name jenkins -v /opt/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 -p 45000:45000 jenkins/jenkins ```
+``` docker run -d --name jenkins -v /opt/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 -p 45000:45000 jenkins/jenkins ```  
 4、初始化  
 http://192.168.101.66:8080/  
-
+image(https://github.com/mykubernetes/linux-install/blob/master/image/jenkins1.png)
+image(https://github.com/mykubernetes/linux-install/blob/master/image/jenkins2.png)
+image(https://github.com/mykubernetes/linux-install/blob/master/image/jenkins3.png)
 5、常用目录
 ```
 plugins        #存储插件目录
