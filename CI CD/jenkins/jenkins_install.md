@@ -9,7 +9,14 @@ mkdir /opt/jenkins
 chown -R  jenkins.jenkins /opt/jenkins
 ```  
 3、启动jenkins服务  
-``` docker run -d --name jenkins -v /opt/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 -p 45000:45000 jenkins/jenkins:lts ```  
+``` docker run -d --name jenkins \
+-v /opt/jenkins:/var/jenkins_home \
+--restart always \
+-p 8080:8080 \
+-p 50000:50000 \
+-p 45000:45000 \
+jenkins/jenkins:lts
+```  
 4、初始化  
 http://192.168.101.66:8080/  
 1、输入密码
