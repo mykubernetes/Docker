@@ -2,7 +2,7 @@ docker安装
 ===========
 
 配置yum源  
-阿里云镜像站：https://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo  
+https://mirrors.tuna.tsinghua.edu.cn/docker-ce/linux/centos/docker-ce.repo  
 
 一、查看docker各个版本  
 ```
