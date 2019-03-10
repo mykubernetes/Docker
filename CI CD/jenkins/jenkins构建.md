@@ -1,0 +1,8 @@
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins4.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins5.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins6.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins7.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins8.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins9.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins10.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins11.png)
