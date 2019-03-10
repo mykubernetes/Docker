@@ -12,8 +12,11 @@ chown -R  jenkins.jenkins /opt/jenkins
 ``` docker run -d --name jenkins -v /opt/jenkins:/var/jenkins_home -p 8080:8080 -p 50000:50000 -p 45000:45000 jenkins/jenkins ```  
 4、初始化  
 http://192.168.101.66:8080/  
+1、输入密码
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins1.png)  
+2、复制密码，因为是docker映射所以目录在/opt/jenkins/下
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins2.png)  
+3、安装插件
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins3.png)  
 5、常用目录
 ```
