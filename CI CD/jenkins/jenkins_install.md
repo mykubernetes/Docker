@@ -9,7 +9,8 @@ mkdir /opt/jenkins
 chown -R  jenkins.jenkins /opt/jenkins
 ```  
 3、启动jenkins服务  
-``` docker run -d --name jenkins \
+``` 
+docker run -d --name jenkins \
 -v /opt/jenkins:/var/jenkins_home \
 --restart always \
 -p 8080:8080 \
