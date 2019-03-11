@@ -52,8 +52,8 @@ git_data_dirs({ "default" => { "path" => "/data/gitlabData" } })
 5、初始化配置  
 ```
 docker exec -ti gitlab /bin/bash
-gitlab-ctl reconfigure   #花时间比较多
-gitlab-ctl restart           #改IP重启就可以了
+gitlab-ctl reconfigure      #花时间比较多
+gitlab-ctl restart          #改IP重启就可以了
 gitlab-ctl status
 ```  
 
