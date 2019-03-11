@@ -22,3 +22,9 @@
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins25.png)  
 12、使用插件运行slave节点
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins24.png)  
+13、必要时执行并发构建，不会超过slave节点数量，以job_name@build_name的任务  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins27.png)  
+14、安装限制并发数构建插件
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins28.png)  
+15、输入限制并发数
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins29.png)  
