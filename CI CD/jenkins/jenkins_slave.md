@@ -18,3 +18,7 @@
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins22.png)  
 10、查看slave工作目录成功  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins23.png)  
+11、手动添加要运行的slave节点
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins25.png)  
+12、使用插件运行slave节点
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins24.png)  
