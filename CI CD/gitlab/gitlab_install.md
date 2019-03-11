@@ -17,7 +17,7 @@ docker run -d \
     -v /opt/gitlab/data:/var/opt/gitlab \
     gitlab/gitlab-ce
 ```  
-4、修改配置文件修改下面两条配置就可以显示了  
+4、修改配置文件,修改下面两条配置就可以显示了  
 ```
 vim /opt/gitlab/config/gitlab.rb
 external_url='192.168.101.66'              #注意添加=号否则可能启动失败
@@ -26,7 +26,7 @@ vim /opt/gitlab/data/gitlab-rails/etc/gitlab.yml
   gitlab:
     ## Web server settings (note: host is the FQDN, do not include http://)
     host: 192.168.101.66      #修改成映射的ip地址
-    port: 8090                             #修改成映射的端口
+    port: 8090                #修改成映射的端口
     https: false
 ```  
 
