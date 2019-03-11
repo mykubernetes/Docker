@@ -1,0 +1,10 @@
+1、创建组  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/gitlab1.png)  
+2、输入组名  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/gitlab2.png)  
+3、选择权限  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/gitlab3.png)  
+4、创建项目  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/gitlab4.png)  
+5、输入项目名称
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/gitlab5.png)  
