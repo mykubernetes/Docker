@@ -20,9 +20,9 @@
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins39.png)  
 11、分配角色  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins40.png)  
-12、添加视图  
+12、添加权限  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins48.png)  
-13、添加权限
+13、添加视图  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins41.png)  
 14、填写视图名称  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins42.png)  
