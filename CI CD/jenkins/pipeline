@@ -1,0 +1,55 @@
+提交阶段：
+
+node {
+    gitlabCommitStatus(builds:["Commit Build"]){
+      stage('Code PUll'){
+          echo "Code PUll"
+          git credentialsId: '10ca77b0-5bcc-4aa7-9f26-b27a5d557f7a', url: 'http://192.168.56.12/devops/account.git'
+      }
+      stage('Code Build'){
+          echo "code Build"
+          sh '/root/mvn/apache-maven-3.5.2/bin/mvn clean compile'
+      }
+      stage('Unit Test'){
+          echo "Unit test"
+      }
+    }
+}
+
+集成测试阶段：
+
+node {
+    stage('Code PUll'){
+        echo "Code PUll"
+        git credentialsId: '10ca77b0-5bcc-4aa7-9f26-b27a5d557f7a', url: 'http://192.168.56.12/devops/account.git'
+    }
+    stage('Code Build'){
+        echo "code Build"
+        sh '/root/mvn/apache-maven-3.5.2/bin/mvn clean compile'
+    }
+    stage('Unit Test'){
+        echo "Unit test"
+        sh '/root/mvn/apache-maven-3.5.2/bin/mvn test'
+    }
+    stage('Package'){
+        echo "Package"
+        sh '/root/mvn/apache-maven-3.5.2/bin/mvn package'
+    }
+    stage('Deploy Test ENV'){
+        echo "Deploy Test ENV"
+        sh 'ls -la ./account-service/target/'
+    }
+    stage('AUto API TEst'){
+        echo "TEST"
+    }
+}
+
+部署阶段
+
+参数化构建过程
+node {
+    stage('Deploy'){
+        echo "Code Deploy Prod"
+        sh '/opt/test.sh ${ENV} ${GROUP} ${PROJECT} ${VERSION}'
+    }
+}
