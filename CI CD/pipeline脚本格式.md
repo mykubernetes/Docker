@@ -1,5 +1,7 @@
 pipeline脚本格式
 ===============
+官方说明
+https://jenkins.io/doc/book/pipeline/syntax/
 ```
 #!groovy
 pipeline {
