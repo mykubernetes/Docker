@@ -56,6 +56,28 @@ https://prometheus.io/docs/prometheus/latest/configuration/configuration/#kubern
 7、登录web界面查看  
 http://192.168.101.66:9090  
 
+#安装 cadvisor
+---------------
+1、运行cadvisor
+```
+docker run \
+  --volume=/:/rootfs:ro \
+  --volume=/var/run:/var/run:rw \
+  --volume=/sys:/sys:ro \
+  --volume=/var/lib/docker/:/var/lib/docker:ro \
+  --volume=/dev/disk/:/dev/disk:ro \
+  --publish=8080:8080 \
+  --detach=true \
+  --name=cadvisor \
+  google/cadvisor:latest
+```  
+2、修改prometheus配置文件
+```
+# tail -n 3 /opt/prometheus/data/prometheus.yml
+  - job_name: 'docker'
+    static_configs:
+      - targets: ['192.168.101.66:8080', '192.168.101.67:8080', '192.168.101.68:8080']
+```  
 二、部署node_exporter  
 ------------------
 1、拉取镜像  
