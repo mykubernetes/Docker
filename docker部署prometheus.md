@@ -58,6 +58,7 @@ http://192.168.101.66:9090
 
 #安装 cadvisor
 ---------------
+监控docker
 1、运行cadvisor
 ```
 docker run \
