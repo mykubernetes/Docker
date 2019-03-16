@@ -58,8 +58,8 @@ http://192.168.101.66:9090
 
 #安装 cadvisor
 ---------------
-监控docker
-1、运行cadvisor
+监控docker  
+1、运行cadvisor  
 ```
 docker run \
   --volume=/:/rootfs:ro \
@@ -72,8 +72,8 @@ docker run \
   --name=cadvisor \
   google/cadvisor:latest
 ```  
-curl http://192.168.101.66:8080
-2、修改prometheus配置文件
+curl http://192.168.101.66:8080  
+2、修改prometheus配置文件  
 ```
 # tail -n 3 /opt/prometheus/data/prometheus.yml
   - job_name: 'docker'
