@@ -72,6 +72,7 @@ docker run \
   --name=cadvisor \
   google/cadvisor:latest
 ```  
+curl http://192.168.101.66:8080
 2、修改prometheus配置文件
 ```
 # tail -n 3 /opt/prometheus/data/prometheus.yml
