@@ -161,7 +161,7 @@ alerting:
    - static_configs: targets:['192.168.101.66:9093']
 
 rule_file:
-	- "/opt/prometheus/data/rule.yml"
+	- "/data/rule.yml"
 ```  
 
 ```
