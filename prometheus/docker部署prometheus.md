@@ -243,6 +243,10 @@ inhibit_rules:
 - group_wait: 30s 等待该组的报警，看有没有一起合伙搭车的  
 - group_interval: 5m 下一次报警开车时间  
 - repeat_interval: 3h 重复报警时间  
+注意：  
+新报警报警时间： 上一次报警之后的 group_interval 时间  
+重复的报警，下次报警时间为：group_interval + repeat_interval  
+
 
 参考文档  
 使用文档：https://prometheus.io/docs/guides/node-exporter/  
