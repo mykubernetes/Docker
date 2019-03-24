@@ -181,7 +181,7 @@ groups:
     expr: (node_memory_MemTotal_bytes - (node_memory_Buffers_bytes + node_memory_Cached_bytes + node_memory_MemFree_bytes )) / node_memory_MemTotal_bytes *100 > 80
     for: 1m
     labels:
-      team: node
+      severity: critical
     annotations:
       summary: "{{$labels.instance}}: High Memory useage detected"
       description: "{{$labels.instance}} Memory usage is above 80% (current value is: {{ $value }}"
@@ -190,7 +190,7 @@ groups:
     expr: up == 0
     for: 1m
     labels:
-      team: node
+      severity: critical
     annotations:
       summary: "Instance {{$labels.instance}} down"
       description: "{{$labels.instance}} of job {{$labels.job}} has been down for more than 5 minutes."
@@ -199,7 +199,7 @@ groups:
     expr: mysql_global_status_threads_connected > 1
     for: 1m
     labels:
-      team: node
+      severity: critical
     annotations:
       summary: "mysql max connect is warnning"
       description: "mysql max connect is Over connections"
