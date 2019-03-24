@@ -161,8 +161,15 @@ alerting:
    - static_configs: targets:['192.168.101.66:9093']
 
 rule_file:
-	- "/data/rule.yml"
+	- "/opt/prometheus/data/rule.yml"
 ```  
+
+```
+# tail -n 3 prometheus.yml 
+  - job_name: 'alertmanager'
+    static_configs:
+    - targets: ['192.168.101.66:9093']
+```
 
 4、定义告警出发条件  
 ```
