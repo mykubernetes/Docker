@@ -239,24 +239,10 @@ inhibit_rules:
       severity: 'warning'
     equal: ['alertname', 'dev', 'instance']
 ```  
-
-最简单配置邮件告警
-```
-global:
-  smtp_smarthost: 'smtp.126.com:25'
-  smtp_from: 'xxxxxx@126.com'
-  smtp_auth_username: 'xxxxxx@126.com'
-  smtp_auth_password: ‘xxxxxx'
-  smtp_require_tls: false
-
-route:
-  receiver: mail
-
-receivers:
-  - name: 'mail'
-    email_configs:
-    - to: '12345678@qq.com'
-```
+- group_by: 根据 labael(标签)进行匹配，如果是多个，就要多个都匹配  
+- group_wait: 30s 等待该组的报警，看有没有一起合伙搭车的  
+- group_interval: 5m 下一次报警开车时间  
+- repeat_interval: 3h 重复报警时间  
 
 参考文档  
 使用文档：https://prometheus.io/docs/guides/node-exporter/  
