@@ -224,10 +224,25 @@ route:
   group_interval: 10s
   repeat_interval: 1h
   receiver: 'email'
+  routes:
+  - match:
+      severity: critical
+    receiver: pager
+  - match_re:
+      severity: ^(warning|critical)$
+    receiver: support_team
+
 receivers:
 - name: 'email'
   email_configs:
-  - to: 'user01@163.com'
+  - to: '123456@qq.com'
+- name: 'support_team'
+  email_configs:
+  - to: '654321@qq.com'
+- name: 'pager'
+  email_configs:
+  - to: 'alert-pager@example.com'
+
 
 - name: 'webhook'
   webhook_configs:
