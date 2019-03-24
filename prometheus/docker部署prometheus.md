@@ -233,6 +233,24 @@ inhibit_rules:
     equal: ['alertname', 'dev', 'instance']
 ```  
 
+最简单配置邮件告警
+```
+global:
+  smtp_smarthost: 'smtp.126.com:25'
+  smtp_from: 'xxxxxx@126.com'
+  smtp_auth_username: 'xxxxxx@126.com'
+  smtp_auth_password: ‘xxxxxx'
+  smtp_require_tls: false
+
+route:
+  receiver: mail
+
+receivers:
+  - name: 'mail'
+    email_configs:
+    - to: '12345678@qq.com'
+```
+
 参考文档  
 使用文档：https://prometheus.io/docs/guides/node-exporter/  
 GitHub：https://github.com/prometheus/node_exporter  
