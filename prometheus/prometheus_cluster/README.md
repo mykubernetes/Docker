@@ -6,7 +6,7 @@ global:
   scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
   evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
   external_labels:
-    worker: 1               #从节点需要修改1,默认第一台从0开始，
+    worker: 1                                #从节点需要修改1,默认第一台从0开始，
 
 rule_files:
   - "rules/*_rules.yml"
@@ -17,7 +17,7 @@ scrape_configs:
       - names: ['_prometheus._tcp.xiodi.cn']
     relabel_configs:
     - source_labels: [__address__]
-      modulus: 2
+      modulus: 2                            #slave节点个数
       target_label: __tmp_hash
       action: hashmod
     - source_labels: [__tmp_hash]
