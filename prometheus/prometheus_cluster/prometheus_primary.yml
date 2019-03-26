@@ -1,0 +1,27 @@
+global:
+  scrape_interval:     15s 
+  evaluation_interval: 15s 
+
+alerting:
+  alertmanagers:
+  - dns_sd_configs:
+    - names: ['_alertmanager._tcp.xiodi.cn']
+
+rule_files:
+  - "rules/*_alertes.yml"
+
+scrape_configs:
+  - job_name: 'node_workers'
+    file_sd_configs:
+      - files:
+        - 'targets/workers/*.json'
+        refresh_interval: 5m
+    honor_labels: true
+    metrics_path: /federate
+    params:
+      'match[]':
+         - '{__name__=~"^instance:.*"}'
+
+# match是用来匹配，需要显示哪些指标，如需要显示 node开头的指标，- '{__name__=~"^node.*"}'
+
+
