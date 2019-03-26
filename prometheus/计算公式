@@ -1,0 +1,6 @@
+CPU使用率：
+100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)
+内存使用率：
+100 - (node_memory_MemFree_bytes+node_memory_Cached_bytes+node_memory_Buffers_bytes) / node_memory_MemTotal_bytes * 100
+磁盘使用率：
+100 - (node_filesystem_free_bytes{mountpoint="/",fstype=~"ext4|xfs"} / node_filesystem_size_bytes{mountpoint="/",fstype=~"ext4|xfs"} * 100)
