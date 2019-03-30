@@ -33,16 +33,16 @@ Error executing 'postInstallation': EACCES: permission denied, mkdir '/bitnami/p
 ``` Error executing 'postInstallation': EACCES: permission denied, mkdir '/bitnami/postgresql' ```  
 
 解决方法：
-docker run添加以下参数：
+docker run添加以下参数：  
 --user $(id -u):$(id -g)
 
 重新执行：
 ```
 docker run -d --name postgresql-master \
     -p 5432:5432 \
-	--user $(id -u):$(id -g) \
+    --user $(id -u):$(id -g) \
     -e POSTGRESQL_REPLICATION_MODE=master \
-	-e POSTGRESQL_USERNAME=postgres \
+    -e POSTGRESQL_USERNAME=postgres \
     -e POSTGRESQL_PASSWORD=password123 \
     -e POSTGRESQL_DATABASE=my_database \
     -e POSTGRESQL_REPLICATION_USER=my_repl_user \
