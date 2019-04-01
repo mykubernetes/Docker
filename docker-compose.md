@@ -48,3 +48,6 @@ docker-compose down           #删除
 docker-compose start          #运行
 docker-compose stop           #停止
 ```  
+
+详细配置  
+https://www.jianshu.com/p/2217cfed29d7  
