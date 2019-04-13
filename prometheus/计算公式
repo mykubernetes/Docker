@@ -38,7 +38,8 @@ increase 函数 其实和rate() 的概念及使⽤⽅法 ⾮常相似
 rate(1m) 是取⼀段时间增量的平均每秒数量
 increase(1m) 则是取⼀段时间增量的总量
 incraese() rate() 相差60倍 incraese() 没有除以了60秒，rate()除以了60秒
-
+increase(5m)           对于5分钟采集适合
+rate() -> CPU 内存 硬盘 IO ⽹络流量        对于1分钟采集适合
 
 
 CPU使用率：
