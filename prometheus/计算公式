@@ -11,7 +11,23 @@ by ()
 把sum加合到⼀起的数值，按照指定的⼀个⽅式进⾏⼀层或多层的拆分
 sum(increase(node_cpu{mode="idle"}[1m])) by (instance)
 
+指定标签
+key{value,value}
+把显示结果缩小的指定标签
+count_netstat_wait_connections{exported_instance="log"}
 
+模糊匹配
+=~
+将标签内的数值以正则表达式的方式显示出来
+count_netstat_wait_connections{exported_instance=~"web.*"}
+.* 属于正则表达式
+模糊匹配  =~
+模糊不匹配  !~
+
+数值过滤
+>,<,=
+对数值进行比较过滤
+count_netstat_wait_connections{exported_instance=~"web.*"} > 400
 
 
 CPU使用率：
