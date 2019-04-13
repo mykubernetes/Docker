@@ -1,6 +1,6 @@
 常用计算函数
 increase()
-increase函数在promethes中，是⽤来 针对Counter这种持续增长的数值，截取其中⼀段时间的增量
+increase函数在promethes中，是⽤来针对Counter这种持续增长的数值，截取其中⼀段时间的增量
 increase(node_cpu[1m])   这样就获取了CPU总使⽤时间在1分钟内的增量
 
 sum()
@@ -28,6 +28,17 @@ count_netstat_wait_connections{exported_instance=~"web.*"}
 >,<,=
 对数值进行比较过滤
 count_netstat_wait_connections{exported_instance=~"web.*"} > 400
+
+rate()
+rate() 函数是专门搭配counter类型数据使⽤的函数它的功能，是按照设置⼀个时间段，取counter在这个时间段中的平均每秒的增量
+rate(node_network_receive_bytes[1m])
+使⽤任何counter数据类型的时候，先给它加上⼀个rate()或者increase()两个函数
+
+increase 函数 其实和rate() 的概念及使⽤⽅法 ⾮常相似
+rate(1m) 是取⼀段时间增量的平均每秒数量
+increase(1m) 则是取⼀段时间增量的总量
+incraese() rate() 相差60倍 incraese() 没有除以了60秒，rate()除以了60秒
+
 
 
 CPU使用率：
