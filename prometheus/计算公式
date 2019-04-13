@@ -42,6 +42,15 @@ incraese() rate() 相差60倍 incraese() 没有除以了60秒，rate()除以了6
 increase(5m)           对于5分钟采集适合
 rate() -> CPU 内存 硬盘 IO ⽹络流量        对于1分钟采集适合
 
+topk()函数
+取前⼏位的最⾼值
+Gauge类型的使⽤
+  topk(3,count_netstat_wait_connections)
+Counter类型的使⽤
+  topk(3,rate(node_network_receive_bytes[20m]))
+只适合于 在console查看 graph的意义不⼤
+
+
 
 CPU使用率：
 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)
