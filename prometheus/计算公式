@@ -50,7 +50,17 @@ Counter类型的使⽤
   topk(3,rate(node_network_receive_bytes[20m]))
 只适合于 在console查看 graph的意义不⼤
 
+count()函数
+把数值符合条件的输出数⽬进⾏加合
+count(count_netstat_wait_connections > 200)
+⼀般⽤它count进⾏⼀些模糊的监控判断
+⽐如说 企业中有100台服务器，那么当只有10台服务器CPU⾼，于80%的时候 这个时候不需要报警，但是当符合80%CPU的服务器数量，超过30台的时候那么就会触发报警
 
+
+
+
+官方提供所有函数介绍
+https://prometheus.io/docs/prometheus/latest/querying/functions/
 
 CPU使用率：
 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)
