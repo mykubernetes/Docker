@@ -1,3 +1,19 @@
+常用计算函数
+increase()
+increase函数在promethes中，是⽤来 针对Counter这种持续增长的数值，截取其中⼀段时间的增量
+increase(node_cpu[1m])   这样就获取了CPU总使⽤时间在1分钟内的增量
+
+sum()
+sum()函数就是起到函数中的值加合的作⽤
+sum(increase(node_cpu[1m]))
+
+by ()
+把sum加合到⼀起的数值，按照指定的⼀个⽅式进⾏⼀层或多层的拆分
+sum(increase(node_cpu{mode="idle"}[1m])) by (instance)
+
+
+
+
 CPU使用率：
 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)
 内存使用率：
