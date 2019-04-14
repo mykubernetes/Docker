@@ -103,3 +103,4 @@ CPU使用率：
 预计多长时间磁盘爆满
 predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h], 4*3600) < 0
 predict_linear(node_filesystem_free_bytes{job="node"}[1h], 4*3600) < 0
+获取空间使用空间一个小时的平均值，查看4个小时后是否爆满
