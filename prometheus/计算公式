@@ -88,9 +88,18 @@ CPU使用率：
 • node_memory_Cached_bytes_bytes - 页面缓存中的内存
 
 磁盘使用率：
+跟：
 100 - (node_filesystem_free_bytes{mountpoint="/",fstype=~"ext4|xfs"} / node_filesystem_size_bytes{mountpoint="/",fstype=~"ext4|xfs"} * 100)
-
+数据：
 (node_filesystem_size_bytes{mountpoint="/data"} - node_filesystem_free_bytes{mountpoint="/data"}) / node_filesystem_size_bytes{mountpoint="/data"} * 100
 
-或者可以使用正则表达式来匹配多个挂载点。
+正则匹配/或者/run挂载点
+可以使用正则表达式来匹配多个挂载点。
 (node_filesystem_size_bytes{mountpoint=~"/|/run"} - node_filesystem_free_bytes{mountpoint=~"/|/run"}) / node_filesystem_size_bytes{mountpoint=~"/|/run"} * 100
+注意：
+（1）不能使用匹配空字符串的正则表达式。
+（2）对于不匹配的正则表达式，还有一个!~运算符。
+
+预计多长时间磁盘爆满
+predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h], 4*3600) < 0
+predict_linear(node_filesystem_free_bytes{job="node"}[1h], 4*3600) < 0
