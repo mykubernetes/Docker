@@ -30,3 +30,6 @@ prometheus配置文件
       - regex: 'kernelVersion'                 #正则表达式，匹配的标签key
         action: labeldrop                      #执行的动作删除标签
 ```  
+
+参考地址：
+https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Crelabel_config%3E
