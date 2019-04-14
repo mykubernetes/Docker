@@ -56,6 +56,10 @@ count(count_netstat_wait_connections > 200)
 ⼀般⽤它count进⾏⼀些模糊的监控判断
 ⽐如说 企业中有100台服务器，那么当只有10台服务器CPU⾼，于80%的时候 这个时候不需要报警，但是当符合80%CPU的服务器数量，超过30台的时候那么就会触发报警
 
+irate()函数
+用于计算距离向量中时间序列的每秒瞬时增长率
+irate(node_cpu_seconds_total{job="node"}[5m])
+
 
 
 
