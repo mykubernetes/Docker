@@ -60,6 +60,11 @@ irate()函数
 用于计算距离向量中时间序列的每秒瞬时增长率
 irate(node_cpu_seconds_total{job="node"}[5m])
 
+avg()函数
+将irate函数封装在avg聚合中，并添加了一个by子句该子句通过实例标签聚合。
+这将产生三个新的指标，使用来自所有CPU和所有模式的值来平均主机的CPU使用情况。
+avg(irate(node_cpu_seconds_total{job="node"}[5m])) by (instance)
+
 
 
 
