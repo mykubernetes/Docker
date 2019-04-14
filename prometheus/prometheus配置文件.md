@@ -6,8 +6,8 @@ prometheus配置文件
       - targets: ['192.168.20.172:8080', '192.168.20.173:8080', '192.168.20.174:8080']
     metric_relabel_configs:
       - source_labels: [__name__]               #源标签__name__为内置标签
-        separator: ','                          #分隔符
-        regex: '(container_tasks_state|container_memory_failures_total)'      #正则表达式，value,对名称是这两个的标签执行动作
+        separator: ','                          #指定分隔符，默认为","
+        regex: '(container_tasks_state|container_memory_failures_total)'      #正则表达式，key,对名称是这两个的标签执行动作
         action: drop                            #动作删除
 ```  
 2、更换标签  
@@ -17,9 +17,9 @@ prometheus配置文件
       - targets: ['192.168.20.172:8080', '192.168.20.173:8080', '192.168.20.174:8080']
     metric_relabel_configs:
       - source_labels: [id]                     #源标签key为id的
-        regex: '/kubepods/([a-z0-9]+);'         #值为kubepods.*的值value传递给$1
+        regex: '/kubepods/([a-z0-9]+);'         #为id标签里值为kubepods.*的value传递给$1
         replacement: '$1'                       #$1为匹配到的值value
-        target_label: container_id              #将$1匹配的值赋予一个新的标签
+        target_label: container_id              #将$1匹配到值的value，赋予一个新的标签key
 ```  
 3、删除标签  
 ```
@@ -27,6 +27,6 @@ prometheus配置文件
     static_configs:
       - targets: ['192.168.20.172:8080', '192.168.20.173:8080', '192.168.20.174:8080']
     metric_relabel_configs:
-      - regex: 'kernelVersion'                 #正则表达式，匹配的标签
+      - regex: 'kernelVersion'                 #正则表达式，匹配的标签key
         action: labeldrop                      #执行的动作删除标签
 ```  
