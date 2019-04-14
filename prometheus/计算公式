@@ -66,16 +66,26 @@ avg()函数
 avg(irate(node_cpu_seconds_total{job="node"}[5m])) by (instance)
 
 
-
-
 官方提供所有函数介绍
 https://prometheus.io/docs/prometheus/latest/querying/functions/
+
+
+
+
+
 CPU Saturation(饱和度)
 node_load1 > on (instance)count by (instance)(node_cpu_seconds_total{mode="idle"})
 
 CPU使用率：
 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)
+
 内存使用率：
 100 - (node_memory_MemFree_bytes+node_memory_Cached_bytes+node_memory_Buffers_bytes) / node_memory_MemTotal_bytes * 100
+
+• node_memory_MemTotal_bytes - 主机上的总内存
+• node_memory_MemFree_bytes - 主机上的空闲内存
+• node_memory_Buffers_bytes_bytes - 缓冲区缓存中的内存
+• node_memory_Cached_bytes_bytes - 页面缓存中的内存
+
 磁盘使用率：
 100 - (node_filesystem_free_bytes{mountpoint="/",fstype=~"ext4|xfs"} / node_filesystem_size_bytes{mountpoint="/",fstype=~"ext4|xfs"} * 100)
