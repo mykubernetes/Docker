@@ -26,7 +26,7 @@ count_netstat_wait_connections{exported_instance=~"web.*"}
 模糊不匹配  !~
 
 数值过滤
->,<,=
+>,<,==,!=,>=,<=
 对数值进行比较过滤
 count_netstat_wait_connections{exported_instance=~"web.*"} > 400
 
