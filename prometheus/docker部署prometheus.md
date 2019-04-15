@@ -177,11 +177,11 @@ rule_file:
 groups:
 - name: test-rule
   rules:
-  - alert: NodeMemoryUsage
-    expr: (node_memory_MemTotal_bytes - (node_memory_Buffers_bytes + node_memory_Cached_bytes + node_memory_MemFree_bytes )) / node_memory_MemTotal_bytes *100 > 80
-    for: 1m
+  - alert: NodeMemoryUsage                     #metric名字
+    expr: (node_memory_MemTotal_bytes - (node_memory_Buffers_bytes + node_memory_Cached_bytes + node_memory_MemFree_bytes )) / node_memory_MemTotal_bytes *100 > 80           #表达式
+    for: 1m                                    #告警持续一分钟
     labels:
-      severity: critical
+      severity: critical                       #添加自定义标签
     annotations:
       summary: "{{$labels.instance}}: High Memory useage detected"
       description: "{{$labels.instance}} Memory usage is above 80% (current value is: {{ $value }}"
