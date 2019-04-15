@@ -105,3 +105,11 @@ CPU使用率：
 predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h], 4*3600) < 0
 predict_linear(node_filesystem_free_bytes{job="node"}[1h], 4*3600) < 0
 获取空间使用空间一个小时的平均值，查看4个小时后是否爆满
+
+监控服务状态
+node_systemd_unit_state{name="docker.service"}                    # 只查询 docker服务
+node_systemd_unit_state{name="docker.service",state="active"}     # 返回活动状态
+node_systemd_unit_state{name="docker.service"} == 1               # 返回当前服务的状态
+注：比较二进制运算符:==。这将检索所有值为1、名称标签为docker.service的指标。
+
+
