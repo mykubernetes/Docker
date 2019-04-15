@@ -262,7 +262,7 @@ inhibit_rules:
 新报警报警时间： 上一次报警之后的 group_interval 时间  
 重复的报警，下次报警时间为：group_interval + repeat_interval  
 
-
+钉钉，微信告警https://prometheus.io/docs/alerting/configuration/#webhook_config  
 参考文档  
 使用文档：https://prometheus.io/docs/guides/node-exporter/  
 GitHub：https://github.com/prometheus/node_exporter  
