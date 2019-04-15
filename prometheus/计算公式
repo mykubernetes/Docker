@@ -81,6 +81,7 @@ CPU使用率：
 
 内存使用率：
 100 - (node_memory_MemFree_bytes+node_memory_Cached_bytes+node_memory_Buffers_bytes) / node_memory_MemTotal_bytes * 100
+(node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes)) / node_memory_MemTotal_bytes * 100
 
 • node_memory_MemTotal_bytes - 主机上的总内存
 • node_memory_MemFree_bytes - 主机上的空闲内存
