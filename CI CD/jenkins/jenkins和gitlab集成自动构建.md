@@ -16,8 +16,9 @@ jenkins和gitlab集成自动构建
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins52.png)  
 7、添加成功  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins55.png)  
-8、登录jenkins找到相应项目配置gitlab触发并复制web地址和token  
+8、登陆jenkins找到相应项目配置gitlab触发并复制web地址和token  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins56.png)  
 9、将jenkins的web地址和token地址添加到gitlab里  
 这样gitlab提交代码后会通知jenkins 并触发相应操作  
+在对应的项目里添加次操作
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins57.png)  
