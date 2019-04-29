@@ -8,6 +8,6 @@
 4、配置备份策略  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins004.png)
 5、手动备份  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins005.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins006.png)
 6、手动还原  
-![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins001.png)
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins005.png)
