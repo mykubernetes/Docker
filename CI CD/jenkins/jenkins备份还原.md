@@ -13,4 +13,9 @@
 6、手动还原  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins005.png)  
 
-
+1、安装插件
+https://github.com/mykubernetes/linux-install/blob/master/image/jenkins007.png
+2、选择插件
+https://github.com/mykubernetes/linux-install/blob/master/image/jenkins008.png
+3、备份还原
+https://github.com/mykubernetes/linux-install/blob/master/image/jenkins009.png
