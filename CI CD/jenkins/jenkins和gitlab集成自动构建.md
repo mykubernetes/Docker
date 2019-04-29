@@ -20,5 +20,11 @@ jenkins和gitlab集成自动构建
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins56.png)  
 9、将jenkins的web地址和token地址添加到gitlab里  
 这样gitlab提交代码后会通知jenkins 并触发相应操作  
-在对应的项目里添加次操作
+在对应的项目里添加次操作  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins57.png)  
+10、通过git push命令自动触发构建  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins58.png)  
+11、jenkins自动构建成功  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins59.png)  
+12、在gitlab里查看自动构建  
+![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins60.png)  
