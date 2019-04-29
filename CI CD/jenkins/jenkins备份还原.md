@@ -1,3 +1,5 @@
+周期性备份
+==========
 1、安装周期性备份还原插件Periodic Backup  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins001.png)  
 2、选择周期性备份管理器  
@@ -10,4 +12,5 @@
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins006.png)  
 6、手动还原  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins005.png)  
+
 
