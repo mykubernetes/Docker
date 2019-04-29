@@ -10,3 +10,4 @@
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins006.png)  
 6、手动还原  
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/jenkins005.png)  
+
