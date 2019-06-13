@@ -49,7 +49,8 @@ Updating / installing...
 # febootstrap -i bash -i wget -i yum -i telnet -i iputils -i iproute -i vim -i gzip -i tar centos76 centos76-extend http://mirrors.aliyun.com/centos/7/os/x86_64/
 
 # 下载安装完毕后目录（相当于本地一个完整的 centos7.6 的系统目录）
-# ll centos76-extend/
+# cd centos76-extend/
+# ll
 total 8
 lrwxrwxrwx.  1 root root    7 Jun  9 15:50 bin -> usr/bin
 dr-xr-xr-x.  2 root root    6 Apr 11  2018 boot
@@ -74,6 +75,7 @@ drwxr-xr-x. 18 root root  238 Jun  9 15:50 var
 # 将当前目录打包并导入到镜像
 $ tar -c .|docker import - centos7.6:base-extend
 sha256:495a4b1d9b504cb23b1ae89b5d5187eebd6163639384f5cd2605b620c488c3be
+#注意进入目录里执行，否则无法启动docker
 
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
