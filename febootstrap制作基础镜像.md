@@ -79,3 +79,13 @@ $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 centos7.6           base-extend         495a4b1d9b50        21 seconds ago      442MB
 ```  
+
+进入到容器内查看下系统版本以及指定软件是否已安装。  
+```
+$ docker run -i -t centos7.6:base-extend /bin/sh
+WARNING: IPv4 forwarding is disabled. Networking will not work.     
+sh-4.2# cat /etc/redhat-release 
+CentOS Linux release 7.6.1810 (Core) 
+sh-4.2# vim a.txt
+......
+```  
