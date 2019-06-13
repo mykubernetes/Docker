@@ -73,18 +73,18 @@ drwxr-xr-x. 13 root root  155 Jun  9 15:50 usr
 drwxr-xr-x. 18 root root  238 Jun  9 15:50 var
 
 # 将当前目录打包并导入到镜像
-$ tar -c .|docker import - centos7.6:base-extend
+# tar -c .|docker import - centos7.6:base-extend
 sha256:495a4b1d9b504cb23b1ae89b5d5187eebd6163639384f5cd2605b620c488c3be
 #注意进入目录里执行，否则无法启动docker
 
-$ docker images
+# docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
 centos7.6           base-extend         495a4b1d9b50        21 seconds ago      442MB
 ```  
 
 进入到容器内查看下系统版本以及指定软件是否已安装。  
 ```
-$ docker run -i -t centos7.6:base-extend /bin/sh
+# docker run -i -t centos7.6:base-extend /bin/sh
 WARNING: IPv4 forwarding is disabled. Networking will not work.     
 sh-4.2# cat /etc/redhat-release 
 CentOS Linux release 7.6.1810 (Core) 
