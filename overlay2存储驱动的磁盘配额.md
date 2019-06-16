@@ -4,6 +4,7 @@ overlay存储驱动层数过多时会导致文件链接数过多可能会耗尽i
 内核要求  
 ---
 需要一个高版本的内核推荐4.9以上，我们用的是4.14，如果使用低内核可能一些FROM别的基础镜像就跑不了  
+https://github.com/zijiwork/kernel/releases/tag/v4.14.49  
 
 使用xfs文件系统  
 ---
