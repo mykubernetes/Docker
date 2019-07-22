@@ -1,5 +1,6 @@
 gitlab安装
 =======
+https://docs.gitlab.com/omnibus/docker/  
 1、下载镜像  
 ``` docker pull gitlab/gitlab-ce ```  
 2、创建挂载目录  
