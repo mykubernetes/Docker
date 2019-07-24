@@ -23,7 +23,7 @@ sudo gitlab-ctl restart
 
 备份与恢复  
 ===
-备份配置  
+1)备份配置  
 ---
 配置文件再/etc/gitlab/ 下面，将所有的配置用tar备份即可  
 ```
@@ -32,7 +32,7 @@ sudo gitlab-ctl restart
 gitlab.rb  gitlab-secrets.json  trusted-certs
 ```  
  
-备份数据  
+2)备份数据  
 ---
 Gitlab的备份目录路径设置  
 ```
