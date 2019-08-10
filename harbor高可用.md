@@ -62,7 +62,7 @@ stream {
 
 5、图形配置双主复制  
 
-6、测试  
+6、node01端配置测试  
 ```
 # docker tag nginx:1.13.12 192.168.101.69/kubernetes/nginx:1.13.12
 
@@ -71,8 +71,14 @@ stream {
      "insecure-registries": ["192.168.101.69"]
 }
 
+图形化配置，创建仓库，创建用户，将仓库添加成员
+
 # docker login 192.168.101.69
 # docker push 192.168.101.69/kubernetes/nginx:1.13.12
-
+The push refers to repository [192.168.101.69/kubernetes/nginx]
+7ab428981537: Pushed 
+82b81d779f83: Pushed 
+d626a8ad97a1: Pushed 
+1.13.12: digest: sha256:e4f0474a75c510f40b37b6b7dc2516241ffa8bde5a442bde3d372c9519c84d90 size: 948
 ```  
 
