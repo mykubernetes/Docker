@@ -71,7 +71,7 @@ stream {
      "insecure-registries": ["192.168.101.69"]
 }
 
-
+# docker login 192.168.101.69
 # docker push 192.168.101.69/kubernetes/nginx:1.13.12
 
 ```  
