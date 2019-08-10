@@ -1,8 +1,8 @@
 1、harbor高可用架构
 ```
-    nginx
-    |    |
-harbor  harbor    #harobor双主复制模型     
+node01 192.168.101.69 docker nginx
+node02 192.168.101.70 docker harbor
+node03 192.168.101.71 docker harbor
 ```  
 
 2、部署docker和docker-compose  
