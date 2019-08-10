@@ -25,9 +25,13 @@ hostname: 192.168.101.70
 
 4、部署nginx  
 ```
+部署docker
+# curl -fsSL https://get.docker.com | bash -s docker --mirror Aliyun
+
+编辑配置文件
 # cat nginx.conf 
 user nginx;
-work_processes 1;
+workdf_processes 1;
 
 error_log /var/log/nginx/error.log warn;
 
@@ -52,4 +56,6 @@ stream {
    }
 }
 
+运行nginx
+# docker run -idt --net=host --name harbornginx -v /root/nginx/nginx.conf:/etc/nginx/nginx.conf nginx:1.13.12
 ```  
