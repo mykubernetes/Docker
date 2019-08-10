@@ -59,3 +59,20 @@ stream {
 运行nginx
 # docker run -idt --net=host --name harbornginx -v /root/nginx/nginx.conf:/etc/nginx/nginx.conf nginx:1.13.12
 ```  
+
+5、图形配置双主复制  
+
+6、测试  
+```
+# docker tag nginx:1.13.12 192.168.101.69/kubernetes/nginx:1.13.12
+
+# cat /etc/docker/daemon.json 
+{
+     "insecure-registries": ["192.168.101.69"]
+}
+
+
+# docker push 192.168.101.69/kubernetes/nginx:1.13.12
+
+```  
+
