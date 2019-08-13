@@ -104,7 +104,8 @@ EOF
 - storage-driver #配置overlay模式
 - storage-opts #选项
 - log-driver #日志设备
-- exec-opts #配置cgroup
+- exec-opts #配置cgroup  
+
 2、启动Docker  
 ```
 $ systemctl enable docker && systemctl start docker
