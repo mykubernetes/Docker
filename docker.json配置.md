@@ -99,10 +99,11 @@ $ cat << EOF > /etc/docker/daemon.json
 }
 EOF
 ```  
-- insecure-registry # 自建仓库地址，忽略https  
-- graph # docker数据存储路径
-
-
+- insecure-registry #自建仓库地址，忽略https  
+- graph #docker数据存储路径
+- storage-driver #配置overlay模式
+- storage-opts #选项
+- log-driver #日志设备
 2、启动Docker  
 ```
 $ systemctl enable docker && systemctl start docker
