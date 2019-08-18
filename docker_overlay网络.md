@@ -34,7 +34,7 @@ $ nohup ./etcd --name docker-node2 --initial-advertise-peer-urls http://192.168.
 ```
 
 
-在docker-node2上  
+在docker-node3上  
 ```
 $ wget https://github.com/coreos/etcd/releases/download/v3.0.12/etcd-v3.0.12-linux-amd64.tar.gz
 $ tar zxvf etcd-v3.0.12-linux-amd64.tar.gz
