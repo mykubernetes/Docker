@@ -34,6 +34,10 @@ root@no1:/var/lib/docker/overlay2# cat 33a4e0217cb0342f024ee2f093ab7188433b2b231
 l/QQIYMV3GOYXUTDN6GAAKSM7ZFL:l/UZH33GFG3GMRJCYLAIHJQKEUIN
 ```  
 
+挂载方式  
+---
+```  mount|grep overlay ```  
+
 overlay: 只挂载一层,其他层通过最高层通过硬连接形式共享(增加了磁盘inode的负担)  
 ```
 /var/lib/docker/overlay/ae6ca8bdaf74720c26b4d780d0c7837e487505c410efb5b9d891bb78796e8e0f/merged type overlay
