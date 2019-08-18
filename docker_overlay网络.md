@@ -8,12 +8,12 @@
 $ wget https://github.com/coreos/etcd/releases/download/v3.0.12/etcd-v3.0.12-linux-amd64.tar.gz
 $ tar zxvf etcd-v3.0.12-linux-amd64.tar.gz
 $ cd etcd-v3.0.12-linux-amd64
-$ nohup ./etcd --name docker-node1 --initial-advertise-peer-urls http://192.168.205.10:2380 \
---listen-peer-urls http://192.168.205.10:2380 \
---listen-client-urls http://192.168.205.10:2379,http://127.0.0.1:2379 \
---advertise-client-urls http://192.168.205.10:2379 \
+$ nohup ./etcd --name docker-node1 --initial-advertise-peer-urls http://192.168.101.69:2380 \
+--listen-peer-urls http://192.168.101.69:2380 \
+--listen-client-urls http://192.168.101.69:2379,http://127.0.0.1:2379 \
+--advertise-client-urls http://192.168.101.69:2379 \
 --initial-cluster-token etcd-cluster \
---initial-cluster docker-node1=http://192.168.205.10:2380,docker-node2=http://192.168.205.11:2380 \
+--initial-cluster docker-node1=http://192.168.101.69:2380,docker-node2=http://192.168.101.70:2380,docker-node3=http://192.168.101.71:2380 \
 --initial-cluster-state new&
 ```
 
@@ -24,21 +24,37 @@ $ nohup ./etcd --name docker-node1 --initial-advertise-peer-urls http://192.168.
 $ wget https://github.com/coreos/etcd/releases/download/v3.0.12/etcd-v3.0.12-linux-amd64.tar.gz
 $ tar zxvf etcd-v3.0.12-linux-amd64.tar.gz
 $ cd etcd-v3.0.12-linux-amd64/
-$ nohup ./etcd --name docker-node2 --initial-advertise-peer-urls http://192.168.205.11:2380 \
---listen-peer-urls http://192.168.205.11:2380 \
---listen-client-urls http://192.168.205.11:2379,http://127.0.0.1:2379 \
---advertise-client-urls http://192.168.205.11:2379 \
+$ nohup ./etcd --name docker-node2 --initial-advertise-peer-urls http://192.168.101.70:2380 \
+--listen-peer-urls http://192.168.101.70:2380 \
+--listen-client-urls http://192.168.101.70:2379,http://127.0.0.1:2379 \
+--advertise-client-urls http://192.168.101.70:2379 \
 --initial-cluster-token etcd-cluster \
---initial-cluster docker-node1=http://192.168.205.10:2380,docker-node2=http://192.168.205.11:2380 \
+--initial-cluster docker-node1=http://192.168.101.69:2380,docker-node2=http://192.168.101.70:2380,docker-node3=http://192.168.101.71:2380 \
 --initial-cluster-state new&
 ```
+
+
+在docker-node2上  
+```
+$ wget https://github.com/coreos/etcd/releases/download/v3.0.12/etcd-v3.0.12-linux-amd64.tar.gz
+$ tar zxvf etcd-v3.0.12-linux-amd64.tar.gz
+$ cd etcd-v3.0.12-linux-amd64/
+$ nohup ./etcd --name docker-node3 --initial-advertise-peer-urls http://192.168.101.71:2380 \
+--listen-peer-urls http://192.168.101.71:2380 \
+--listen-client-urls http://192.168.101.71:2379,http://127.0.0.1:2379 \
+--advertise-client-urls http://192.168.101.71:2379 \
+--initial-cluster-token etcd-cluster \
+--initial-cluster docker-node1=http://192.168.101.69:2380,docker-node2=http://192.168.101.70:2380,docker-node3=http://192.168.101.71:2380 \
+--initial-cluster-state new&
+```  
 
 检查cluster状态
 
 ```
-$ ~/etcd-v3.0.12-linux-amd64$ ./etcdctl cluster-health
-member 21eca106efe4caee is healthy: got healthy result from http://192.168.205.10:2379
-member 8614974c83d1cc6d is healthy: got healthy result from http://192.168.205.11:2379
+# ./etcdctl cluster-health
+member 5903b9fb0d70a352 is healthy: got healthy result from http://192.168.101.69:2379
+member 620553a7a4115623 is healthy: got healthy result from http://192.168.101.70:2379
+member 74492978ad38fdfd is healthy: got healthy result from http://192.168.101.71:2379
 cluster is healthy
 ```
 
