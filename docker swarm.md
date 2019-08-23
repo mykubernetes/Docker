@@ -202,7 +202,7 @@ wordpress        2
 internal方式  
 ```
 创建一个需要被dns解析的容器
-# docker service create --name whomai -p 8000:8000 --network demo -d jwilder/whoami
+# docker service create --name whoami -p 8000:8000 --network demo -d jwilder/whoami
 # curl 127.0.0.1:8000
 I'm 3242961c028a
 
@@ -228,14 +228,14 @@ CONTAINER ID        IMAGE                   COMMAND                  CREATED    
 / # 
 
 #ping mysql返回的地址为service地址
-/ # ping whomai
+/ # ping whoami
 PING whomai (10.0.0.5): 56 data bytes
 64 bytes from 10.0.0.5: seq=0 ttl=64 time=0.085 ms
 64 bytes from 10.0.0.5: seq=1 ttl=64 time=1.721 ms
 
 
 #解析mysql地址，前加tasks才能解析到容器地址
-/ # nslookup whomai
+/ # nslookup whoami
 Server:		127.0.0.11
 Address:	127.0.0.11:53
 
