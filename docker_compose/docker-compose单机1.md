@@ -48,4 +48,6 @@ docker-compose ps
 docker-compose images
 进入容器
 docker-compose exec mysql bash
+水平扩容
+docker-compose up --scale web=3 -d
 ```  
