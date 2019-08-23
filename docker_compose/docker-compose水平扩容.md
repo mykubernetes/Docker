@@ -61,3 +61,13 @@ if __name__ == "__main__":
 docker-pospose up --scale web=3 -d
 docker-pospose ps
 ```  
+
+测试  
+```
+# curl 192.168.101.70:8080
+Hello Container World! I have been seen 56 times and my hostname is 1377bce6ee24.
+# curl 192.168.101.70:8080
+Hello Container World! I have been seen 57 times and my hostname is 8d9ea717194d.
+# curl 192.168.101.70:8080
+Hello Container World! I have been seen 58 times and my hostname is 188d11aec768.
+```  
