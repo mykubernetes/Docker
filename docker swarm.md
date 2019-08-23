@@ -195,7 +195,7 @@ wordpress        2
 ``` # docker stack deploy wordpress --compose-file=docker-compose.yml ```  
 
 
-四、解析  
+四、Routing Mesh(dns解析)    
 ```
 创建一个需要被dns解析的容器
 # docker service create --name whomai -p 8000:8000 --network demo -d jwilder/whoami
