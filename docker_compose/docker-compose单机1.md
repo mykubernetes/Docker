@@ -30,3 +30,22 @@ networks:
   my-bridge:
     driver: bridge
 ```  
+命令  
+```
+启动，日志输出到前台
+docker-compose up
+启动，日志不输出到前台
+docker-compose up -d
+启动，指定配置文件方式
+docker-compose -f docker-compose up
+停止
+docker-compose stop
+启动
+docker-compose start
+查看运行的容器
+docker-compose ps
+查看docker-compose定义的容器
+docker-compose images
+进入容器
+docker-compose exec mysql bash
+```  
