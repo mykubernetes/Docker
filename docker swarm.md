@@ -237,7 +237,8 @@ Address:	127.0.0.11:53
 
 Non-authoritative answer:
 Name:	whomai
-Address: 10.0.0.5
+Address: 10.0.0.7
+Address: 10.0.0.15
 
 *** Can't find whomai: No answer
 
