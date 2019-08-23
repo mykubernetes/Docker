@@ -65,14 +65,14 @@ cluster is healthy
 
 ```
 $ sudo service docker stop
-$ sudo /usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://192.168.205.10:2379 --cluster-advertise=192.168.205.10:2375&
+$ sudo /usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://192.168.101.69:2379 --cluster-advertise=192.168.101.69:2375&
 ```
 
 在docker-node2上
 
 ```
 $ sudo service docker stop
-$ sudo /usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://192.168.205.11:2379 --cluster-advertise=192.168.205.11:2375&
+$ sudo /usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock --cluster-store=etcd://192.168.101.70:2379 --cluster-advertise=192.168.101.70:2375&
 ```
 
 ## 创建overlay network
@@ -141,8 +141,8 @@ $ ./etcdctl ls /docker
 /docker/nodes
 
 $ ./etcdctl ls /docker/nodes
-/docker/nodes/192.168.205.11:2375
-/docker/nodes/192.168.205.10:2375
+/docker/nodes/192.168.101.69:2375
+/docker/nodes/192.168.101.70:2375
 
 $ ./etcdctl ls /docker/network/v1.0/network
 /docker/network/v1.0/network/3d430f3338a2c3496e9edeccc880f0a7affa06522b4249497ef6c4cd6571eaa9
