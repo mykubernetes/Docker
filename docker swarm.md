@@ -245,5 +245,38 @@ Address: 10.0.0.7
 Address: 10.0.0.15
 
 *** Can't find whomai: No answer
+```  
 
+ingress方式  
+```
+查看工作节点防火墙规则
+# iptables -nL -t nat
+在有部署的whomai机器访问
+# curl 127.0.0.1:8000
+I'm 49c082b99daa
+在没有部署的whomai机器访问
+# curl 127.0.0.1:8000
+I'm 49c082b99daa
+发现都可以反问，是因为防火墙规则配置了转发功能，并且docker_gwbride和防火墙规则在一个网络里
+
+进入ingress
+#  ls /var/run/docker/netns/
+1-bt8dce6g1o  1-pbatc0ldzr  3b3ff00afea8  70db15bf500b  d12e84ce9ba1  ingress_sbox
+   
+# nsenter --net=/var/run/docker/netns/ingress_sbox 
+# ip a
+1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN qlen 1
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+    inet 127.0.0.1/8 scope host lo
+       valid_lft forever preferred_lft forever
+25: eth0@if26: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1450 qdisc noqueue state UP 
+    link/ether 02:42:0a:ff:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 0
+    inet 10.255.0.2/16 brd 10.255.255.255 scope global eth0
+       valid_lft forever preferred_lft forever
+    inet 10.255.0.45/32 brd 10.255.0.45 scope global eth0
+       valid_lft forever preferred_lft forever
+28: eth1@if29: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc noqueue state UP 
+    link/ether 02:42:ac:13:00:02 brd ff:ff:ff:ff:ff:ff link-netnsid 1
+    inet 172.19.0.2/16 brd 172.19.255.255 scope global eth1
+       valid_lft forever preferred_lft forever
 ```  
