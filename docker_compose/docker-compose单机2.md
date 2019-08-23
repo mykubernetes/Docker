@@ -55,3 +55,9 @@ def hello():
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=80, debug=True)
 ```  
+
+水平扩缩容  
+```
+docker-pospose up --scale web=3 -d
+docker-pospose ps
+```  
