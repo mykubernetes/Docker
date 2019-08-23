@@ -62,6 +62,8 @@ docker-compose stop
 docker-compose start
 查看运行的容器
 docker-compose ps
+查看docker-compose定义的容器
+docker-compose images
 进入容器
 docker-compose exec mysql bash
 ```  
