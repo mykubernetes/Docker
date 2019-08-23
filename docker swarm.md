@@ -195,7 +195,11 @@ wordpress        2
 ``` # docker stack deploy wordpress --compose-file=docker-compose.yml ```  
 
 
-四、Routing Mesh(dns解析)    
+四、Routing Mesh  
+1、internal---Container和Container之间的访问通过overlay网络（通过VIP虚拟IP）  
+2、ingress---如果服务有绑定接口，则此服务可通过任意swarm节点的相应接口访问  
+
+internal方式  
 ```
 创建一个需要被dns解析的容器
 # docker service create --name whomai -p 8000:8000 --network demo -d jwilder/whoami
