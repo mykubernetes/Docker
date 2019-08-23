@@ -193,3 +193,12 @@ wordpress        2
 
 8、更新和创建一样  
 ``` # docker stack deploy wordpress --compose-file=docker-compose.yml ```  
+
+
+四、解析  
+```
+#ping mysql返回的地址为service地址
+ping mysql
+#解析mysql地址，前加tasks才能解析到容器地址
+nslookup tasks.mysql
+```  
