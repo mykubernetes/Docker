@@ -197,8 +197,48 @@ wordpress        2
 
 四、解析  
 ```
+创建一个需要被dns解析的容器
+# docker service create --name whomai -p 8000:8000 --network demo -d jwilder/whoami
+# curl 127.0.0.1:8000
+I'm 3242961c028a
+
+创建一个客户端进行dns解析
+# docker service create --name client -d --network demo busybox sh -c "while true; do sleep 3600; done"
+
+#进入客户端容器进行解析
+# docker service ls
+ID                  NAME                MODE                REPLICAS            IMAGE                   PORTS
+6u2kg07ltixb        client              replicated          1/1                 busybox:latest          
+sxn7j1c5qwvl        whomai              replicated          1/1                 jwilder/whoami:latest   *:8000->8000/tcp
+
+# docker service ps client
+ID                  NAME                IMAGE               NODE                DESIRED STATE       CURRENT STATE           ERROR               PORTS
+lrrkoa5rjrmd        client.1            busybox:latest      node02              Running             Running 5 minutes ago                    
+
+# docker ps
+CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS               NAMES
+5e6c6436a096        busybox:latest          "sh -c 'while true; …"   7 minutes ago       Up 7 minutes                            client.1.lrrkoa5rjrmdolme6srsy5ti9
+3242961c028a        jwilder/whoami:latest   "/app/http"              10 minutes ago      Up 10 minutes       8000/tcp            whomai.1.8y2ipblxkxzx6usutqkxifrxd
+
+# docker exec -it 5e6c sh
+/ # 
+
 #ping mysql返回的地址为service地址
-ping mysql
+/ # ping whomai
+PING whomai (10.0.0.5): 56 data bytes
+64 bytes from 10.0.0.5: seq=0 ttl=64 time=0.085 ms
+64 bytes from 10.0.0.5: seq=1 ttl=64 time=1.721 ms
+
+
 #解析mysql地址，前加tasks才能解析到容器地址
-nslookup tasks.mysql
+/ # nslookup whomai
+Server:		127.0.0.11
+Address:	127.0.0.11:53
+
+Non-authoritative answer:
+Name:	whomai
+Address: 10.0.0.5
+
+*** Can't find whomai: No answer
+
 ```  
