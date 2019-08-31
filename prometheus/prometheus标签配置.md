@@ -21,6 +21,11 @@ prometheus配置文件
         replacement: '$1'                       #$1为匹配到的值value，输出的值为原值，也可以不使用$1，则使用的是自定义的值
         target_label: container_id              #将匹配到符合正则表达式的value的标签名，赋予一个新的标签名
 ```  
+- target_label 为key
+- replacement 为value
+- regex 正则表达式匹配
+- source_lables 源标签
+
 3、删除标签  
 ```
   - job_name: 'docker'
