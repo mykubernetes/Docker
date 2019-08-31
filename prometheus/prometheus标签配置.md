@@ -25,6 +25,7 @@ prometheus配置文件
 - replacement 为value
 - regex 正则表达式匹配
 - source_lables 源标签
+- separator 分隔符，正则表达式多个的分隔符
 
 3、删除标签  
 ```
