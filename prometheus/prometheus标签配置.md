@@ -18,8 +18,8 @@ prometheus配置文件
     metric_relabel_configs:
       - source_labels: [id]                     #源标签key为id的
         regex: '/kubepods/([a-z0-9]+)'         #为id标签里值为kubepods.*的value传递给$1
-        replacement: '$1'                       #$1为匹配到的值value
-        target_label: container_id              #将$1匹配到值的value，赋予一个新的标签key
+        replacement: '$1'                       #$1为匹配到的值value，输出的值为原值，也可以不使用$1，则使用的是自定义的值
+        target_label: container_id              #将匹配到符合正则表达式的value的标签名，赋予一个新的标签名
 ```  
 3、删除标签  
 ```
