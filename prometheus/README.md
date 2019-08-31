@@ -8,3 +8,5 @@ kill方式动态加载命令
 ```
 kill -HUP pid
 ```  
+
+https://www.cnblogs.com/xiangsikai/category/1517901.html  
