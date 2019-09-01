@@ -1,3 +1,8 @@
+官网介绍  
+https://prometheus.io/docs/prometheus/latest/querying/functions/
+
+
+
 常用计算函数
 increase()
 increase函数在promethes中，是⽤来针对Counter这种持续增长的数值，截取其中⼀段时间的增量
