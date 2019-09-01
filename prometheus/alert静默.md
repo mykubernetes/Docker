@@ -6,6 +6,8 @@
 - alertname 为告警名称
 - service=application1 是告警名称里的标签，用于匹配，key=value
 - -c  注释信息  
+- --author "test" 创建静默模式的人
+- --duration "2h" 静默时间
 
 
 2、 查询当前静默列表
