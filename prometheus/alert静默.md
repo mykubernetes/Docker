@@ -2,10 +2,11 @@
 ```
 # amtool --alertmanager.url=http://192.168.101.69:9093 silence add alertname=InstancesGone service=application1 -c "test1"
 ```  
+注意：默认创建的静默时间为 1h ，也可以手工指定，匹配两个标签，然后会返回一个静默 ID  
 - alertname 为告警名称
 - service=application1 是告警名称里的标签，用于匹配，key=value
-- -c  注释信息
-注意：默认创建的静默时间为 1h ，也可以手工指定，匹配两个标签，然后会返回一个静默 ID  
+- -c  注释信息  
+
 
 2、 查询当前静默列表
 ```
