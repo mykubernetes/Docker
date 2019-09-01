@@ -8,6 +8,8 @@ increase()
 increase函数在promethes中，是⽤来针对Counter这种持续增长的数值，截取其中⼀段时间的增量
 increase(node_cpu[1m])   这样就获取了CPU总使⽤时间在1分钟内的增量
 
+irate的函数，用于计算距离向量中时间序列的每秒瞬时增长率
+
 sum()
 sum()函数就是起到函数中的值加合的作⽤
 sum(increase(node_cpu[1m]))
