@@ -126,3 +126,10 @@ node_systemd_unit_state{name="docker.service"} == 1               # 返回当前
 注：比较二进制运算符:==。这将检索所有值为1、名称标签为docker.service的指标。
 
 
+
+Vector matches （向量匹配）
+有两种向量匹配:一对一和多对一(或一对多)
+一对一匹配
+node_systemd_unit_state{name="docker.service"} == 1 and on (instance, job)metadata{datacenter="BJ"}
+多对一和一对多匹配是指"one"一侧的每个向量元素可以与"many"一侧的多个元素匹配。使用group_left或group_right修饰符显式地指定这些匹配，其中left或right决定了哪个向量具有更高的基数
+参考地址： https://prometheus.io/docs/prometheus/latest/querying/operators/#vector-matching
