@@ -38,4 +38,8 @@ groups:
     expr: 100 - (avg(irate(node_cpu_seconds_total{mode="idle"}[5m])) by (instance) * 100)
     labels:
       metric_type: aggregation
+  - record: instance:node_memory_usage:percentage
+    expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes + node_memory_Cached_bytes + node_memory_Buffers_bytes)) / node_memory_MemTotal_bytes * 100
+  - record: instance:root:node_filesystem_usage:percentage
+    expr: (node_filesystem_size_bytes{mountpoint="/"} - node_filesystem_free_bytes{mountpoint="/"}) /node_filesystem_size_bytes{mountpoint="/"} * 100
 ```  
