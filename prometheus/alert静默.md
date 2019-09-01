@@ -20,8 +20,11 @@
 4、扩展，可以不指定--alertmanager.url=http://192.168.101.69:9093的方式  
 amtool 如果不指定 --alertmanager.url默认会在 $HOME/.config/amtool/config.yml 或 /etc/amtools/config.yml 查询  
 ```
-将alertmanager.url写入配置文件
-# vim config.yml
+# 创建目录
+mkdir -pv $HOME/.config/amtool/
+
+# 将alertmanager.url写入配置文件
+# vim /$HOME/.config/amtool/config.yml
 alertmanager.url: "http://192.168.101.69:9093"
 author: test@example.com
 comment_required: true
