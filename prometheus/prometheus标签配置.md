@@ -68,7 +68,7 @@ relable_configs:
   # 整则表达式匹配源标签的值
   [ regex: <regex> | default = (.*) ]
   
-  # 从节点个数
+  # work节点个数
   [ modulus: <uint64> ]
   
   # 替换正则表达式匹配的分组，分组引用 $1,$2,$3,....
