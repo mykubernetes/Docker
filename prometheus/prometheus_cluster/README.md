@@ -21,7 +21,7 @@ scrape_configs:
       target_label: __tmp_hash
       action: hashmod                       #设置hash值
     - source_labels: [__tmp_hash]           #对tmp_hash标签进行保留操作
-      regex: ^1$                            #和worker值保持一致
+      regex: ^1$                            #和worker值保持一致，代表匹配的worker1的节点
       action: keep                          #对标签进行保留
 注：
 各个 slave（worker）节点,唯一的区别在于 prometheus.yml 的定义
