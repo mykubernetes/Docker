@@ -16,13 +16,13 @@ scrape_configs:
     dns_sd_configs:
       - names: ['_prometheus._tcp.xiodi.cn']
     relabel_configs:
-    - source_labels: [__address__]
+    - source_labels: [__address__]          #把以前的address标签重新打标签，为tmp_hash,
       modulus: 2                            #slave节点个数
       target_label: __tmp_hash
       action: hashmod
-    - source_labels: [__tmp_hash]
+    - source_labels: [__tmp_hash]           #对tmp_hash标签进行保留操作
       regex: ^1$                            #和worker值保持一致
-      action: keep
+      action: keep                          #对标签进行保留
 注：
 各个 slave（worker）节点,唯一的区别在于 prometheus.yml 的定义
 worker 0 代表第一个slave
