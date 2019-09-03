@@ -22,7 +22,7 @@ scrape_configs:
       action: hashmod
     - source_labels: [__tmp_hash]
       regex: ^1$                            #和worker值保持一致
-action: keep
+      action: keep
 注：
 各个 slave（worker）节点,唯一的区别在于 prometheus.yml 的定义
 worker 0 代表第一个slave
