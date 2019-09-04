@@ -512,7 +512,7 @@ systemd(1)─┬─NetworkManager(664)─┬─{NetworkManager}(671)
 ```  
 在每个pid namespace中都存在着一颗类似的进程树，都有一个pid为1的进程。当某个进程（pid != 1）退出时，内核会指定pid为1的进程成为其子进程的父进程。当pid为1的进程停止时，内核会杀死该namespace中的所有的其他进程，namespace销毁。  
 
-pid namespace允许嵌套，存在上下级关系。新创建的namespace属于创建进程所在namespace的下级，上级namespace可以看到***所有下级***namespace的进程信息，无法看到上级或者平级namespace的进程信息。  
+pid namespace允许嵌套，存在上下级关系。新创建的namespace属于创建进程所在namespace的下级，上级namespace可以看到所有下级namespace的进程信息，无法看到上级或者平级namespace的进程信息。  
 
 与其他namespace不同，进程的pid namespace无法更改，即使调用setns(2)也只会影响当前进程的子进程。  
 
