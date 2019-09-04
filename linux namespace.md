@@ -473,3 +473,384 @@ key        semid      owner      perms      nsems
 - 这里使用了三个终端和两个ipc namespace，为便于观察，分别设置了两个hostname
 
 
+
+4、pid namespace
+---
+
+pid namespace是用来隔离进程号的，也就是说，同一个系统中，在不同的namespace下可以存在相同pid的两个进程。比如两个pid都为1的两个进程。  
+
+在Linux系统中，pid为大于等于1的整数，且不能重复，进程退出后，pid将回收利用。pid为1的进程是内核启动的第一个进程，通常为init或者systemd。后续启动的其他进程都是该进程的子进程，当init或者systemd进程退出时，系统也就退出了。  
+```
+### 查看当前系统状态的进程树信息，其实进程为systemd(1)，括号内为pid ###
+# pstree -pl
+systemd(1)─┬─NetworkManager(664)─┬─{NetworkManager}(671)
+           │                     └─{NetworkManager}(678)
+           ├─agetty(657)
+           ├─auditd(614)───{auditd}(615)
+           ├─crond(653)
+           ├─dbus-daemon(641)───{dbus-daemon}(646)
+           ├─firewalld(663)───{firewalld}(791)
+           ├─lvmetad(490)
+           ├─master(1259)─┬─pickup(1265)
+           │              └─qmgr(1266)
+           ├─polkitd(639)─┬─{polkitd}(648)
+           │              ├─{polkitd}(649)
+           │              ├─{polkitd}(652)
+           │              ├─{polkitd}(658)
+           │              └─{polkitd}(661)
+           ├─rsyslogd(970)─┬─{rsyslogd}(974)
+           │               └─{rsyslogd}(975)
+           ├─sshd(969)───sshd(1421)───bash(1425)───pstree(1630)
+           ├─systemd-journal(462)
+           ├─systemd-logind(640)
+           ├─systemd-udevd(498)
+           └─tuned(968)─┬─{tuned}(1362)
+                        ├─{tuned}(1363)
+                        ├─{tuned}(1364)
+                        └─{tuned}(1378)
+
+```  
+在每个pid namespace中都存在着一颗类似的进程树，都有一个pid为1的进程。当某个进程（pid != 1）退出时，内核会指定pid为1的进程成为其子进程的父进程。当pid为1的进程停止时，内核会杀死该namespace中的所有的其他进程，namespace销毁。  
+
+pid namespace允许嵌套，存在上下级关系。新创建的namespace属于创建进程所在namespace的下级，上级namespace可以看到***所有下级***namespace的进程信息，无法看到上级或者平级namespace的进程信息。  
+
+与其他namespace不同，进程的pid namespace无法更改，即使调用setns(2)也只会影响当前进程的子进程。  
+
+- terminal-1
+```
+### 创建新的pid namespace、uts namespace和mnt namespace，运行bash，--fork表示以（unshare的）子进程运行bash程序 ###
+# unshare --pid --uts --mount --fork bash
+
+### 设置hostname以便于区分 ###
+# hostname namespace-01 && exec bash
+
+### 查看进程树，依然可以看到完整的进程树，因为pstree读取/proc目录的信息，而/proc继承自unshare所在的mount namespace ###
+# pstree -pl
+systemd(1)─┬─NetworkManager(664)─┬─{NetworkManager}(671)
+           │                     └─{NetworkManager}(678)
+           ├─agetty(657)
+           ├─auditd(614)───{auditd}(615)
+           ├─crond(653)
+           ├─dbus-daemon(641)───{dbus-daemon}(646)
+           ├─firewalld(663)───{firewalld}(791)
+           ├─lvmetad(490)
+           ├─master(1259)─┬─pickup(1812)
+           │              └─qmgr(1266)
+           ├─polkitd(639)─┬─{polkitd}(648)
+           │              ├─{polkitd}(649)
+           │              ├─{polkitd}(652)
+           │              ├─{polkitd}(658)
+           │              └─{polkitd}(661)
+           ├─rsyslogd(970)─┬─{rsyslogd}(974)
+           │               └─{rsyslogd}(975)
+           ├─sshd(969)───sshd(1421)───bash(1425)───unshare(1792)───bash(1793)───pstree(1816)    # bash进行的父进程是unshare(1792)，当前进程为bash(1793)
+           ├─systemd-journal(462)
+           ├─systemd-logind(640)
+           ├─systemd-udevd(498)
+           └─tuned(968)─┬─{tuned}(1362)
+                        ├─{tuned}(1363)
+                        ├─{tuned}(1364)
+                        └─{tuned}(1378)
+### 查看进程号，当前进程号为1 ###
+# echo $$
+1
+### 查看inode number，此时的$$读取的进程信息为unshare所在的mount namespace对应的inode信息 ###
+# readlink /proc/$$/ns/{pid,uts,mnt}
+pid:[4026531836]
+uts:[4026531838]
+mnt:[4026531840]
+
+# readlink /proc/1793/ns/{pid,uts,mnt}
+pid:[4026532501]
+uts:[4026532500]
+mnt:[4026532499]
+
+### 重新挂载proc ###
+# mount --types proc proc /proc/
+
+### 再次查看进程树，仅能看到当前namespace的进行信息 ###
+# pstree -pl
+bash(1)───pstree(45)
+
+### 查看$$对应的namespace的inode，显示1793对应的信息 ###
+# readlink /proc/$$/ns/{pid,uts,mnt}
+pid:[4026532501]
+uts:[4026532500]
+mnt:[4026532499]
+```  
+
+- terminal-2
+```
+### 查看进程树，依然显示完整的进程树信息，说明上级namespace可以看到夏季namespace的pid信息，且显示相对于当前namespace的pid ###
+# pstree -pl
+systemd(1)─┬─NetworkManager(664)─┬─{NetworkManager}(671)
+           │                     └─{NetworkManager}(678)
+           ├─agetty(657)
+           ├─auditd(614)───{auditd}(615)
+           ├─crond(653)
+           ├─dbus-daemon(641)───{dbus-daemon}(646)
+           ├─firewalld(663)───{firewalld}(791)
+           ├─lvmetad(490)
+           ├─master(1259)─┬─pickup(1812)
+           │              └─qmgr(1266)
+           ├─polkitd(639)─┬─{polkitd}(648)
+           │              ├─{polkitd}(649)
+           │              ├─{polkitd}(652)
+           │              ├─{polkitd}(658)
+           │              └─{polkitd}(661)
+           ├─rsyslogd(970)─┬─{rsyslogd}(974)
+           │               └─{rsyslogd}(975)
+           ├─sshd(969)─┬─sshd(1421)───bash(1425)───unshare(1792)───bash(1793)
+           │           └─sshd(1848)───bash(1852)───pstree(1867)
+           ├─systemd-journal(462)
+           ├─systemd-logind(640)
+           ├─systemd-udevd(498)
+           └─tuned(968)─┬─{tuned}(1362)
+                        ├─{tuned}(1363)
+                        ├─{tuned}(1364)
+                        └─{tuned}(1378)
+
+### 查看inode number ###
+# readlink /proc/$$/ns/{pid,uts,mnt}
+pid:[4026531836]
+uts:[4026531838]
+mnt:[4026531840]
+
+### 创建namespace02并默认挂载proc ###
+# unshare --pid --uts --mount --fork --mount-proc bash
+
+### 设置hostname以便于区分 ###
+# hostname namespace-02 && exec bash
+
+### 查看inode number ###
+# readlink /proc/$$/ns/{pid,uts,mnt}
+pid:[4026532504]
+uts:[4026532503]
+mnt:[4026532502]
+
+### 查看当前namespace的进程树，无法看到namespace01的进行信息 ###
+# pstree -pl
+bash(1)───pstree(19)
+```  
+
+- terminal-1  
+```
+### 回到namespace01查看进行树信息，依然只有自身namespace下的进程信息，无法看到上级或者namespace02的进行 ###
+# pstree -pl
+bash(1)───pstree(50)
+
+### 在namespace01的基础上创建namespace03 ###
+# unshare --pid --uts --mount --fork --mount-proc bash
+
+### 修改hostname以便于区分 ###
+# hostname namespace-03 && exec bash
+
+### 查看inode number，确保为新namespace ###
+# readlink /proc/$$/ns/{pid,uts,mnt}
+pid:[4026532507]
+uts:[4026532506]
+mnt:[4026532505]
+
+### 查看进程树信息 ###
+# pstree -pl
+bash(1)───pstree(20)
+```  
+
+- terminal-2
+```
+### 回到namespace02查看进程树信息 ###
+# pstree -pl
+bash(1)───pstree(21)
+```  
+
+- terminal-3
+```
+### 查看进程树信息 ###
+systemd(1)─┬─NetworkManager(664)─┬─{NetworkManager}(671)
+           │                     └─{NetworkManager}(678)
+           ├─agetty(657)
+           ├─auditd(614)───{auditd}(615)
+           ├─crond(653)
+           ├─dbus-daemon(641)───{dbus-daemon}(646)
+           ├─firewalld(663)───{firewalld}(791)
+           ├─lvmetad(490)
+           ├─master(1259)─┬─pickup(1812)
+           │              └─qmgr(1266)
+           ├─polkitd(639)─┬─{polkitd}(648)
+           │              ├─{polkitd}(649)
+           │              ├─{polkitd}(652)
+           │              ├─{polkitd}(658)
+           │              └─{polkitd}(661)
+           ├─rsyslogd(970)─┬─{rsyslogd}(974)
+           │               └─{rsyslogd}(975)
+           ├─sshd(969)─┬─sshd(1421)───bash(1425)───unshare(1792)───bash(1793)───unshare(1929)───bash(1930)
+           │           ├─sshd(1848)───bash(1852)───unshare(1905)───bash(1906)
+           │           └─sshd(1952)───bash(1956)───pstree(1971) # terminal-3对应的进程，当前进程
+           ├─systemd-journal(462)
+           ├─systemd-logind(640)
+           ├─systemd-udevd(498)
+           └─tuned(968)─┬─{tuned}(1362)
+                        ├─{tuned}(1363)
+                        ├─{tuned}(1364)
+                        └─{tuned}(1378)
+
+### 查看进程1793的inode number，1793对应namespace01 ###
+# readlink /proc/1793/ns/{pid,uts,mnt}
+pid:[4026532501]
+uts:[4026532500]
+mnt:[4026532499]
+
+### 查看进程1930的inode number，1930对应namespace03 ###
+# readlink /proc/1930/ns/{pid,uts,mnt}
+pid:[4026532507]
+uts:[4026532506]
+mnt:[4026532505]
+
+### 查看进程1906的inode number，1906对应namespace02 ###
+# readlink /proc/1906/ns/{pid,uts,mnt}
+pid:[4026532504]
+uts:[4026532503]
+mnt:[4026532502]
+
+### 在namespace01中启动新的bash ###
+# nsenter --target 1793 --uts --mount --pid bash
+
+### 查看namespace01中的进程树信息，多了一个unshare(51)和一个bash(52) ###
+# pstree -pl
+bash(1)───unshare(51)───bash(52)
+
+### 查看当前进程的inode number，对应namespace01 ###
+# readlink /proc/$$/ns/{pid,uts,mnt}
+pid:[4026532501]
+uts:[4026532500]
+mnt:[4026532499]
+
+### 查看bash(52)进程的namespace的inode number，对应namespace03，因此证实namespace01可以查看namespace03中的进行信息，也就是上级可以查看下级的进行信息 ###
+# readlink /proc/52/ns/{pid,uts,mnt}
+pid:[4026532507]
+uts:[4026532506]
+mnt:[4026532505]
+```  
+
+目前的状态大概是这个样子  
+```
+                              +-------------------------------+
+                              |hostname: localhost.localdomain|
+                          +---+pid namespace:4026531836       +---+
+                          |   +-------------------------------+   |
+                          |                                       |
+          +---------------v---------------+       +---------------v---------------+
+          |hostname: namespace-01         |       |hostname: namespace-02         |
+          |pid namespace:4026532501       |       |pid namespace:4026532504       |
+          +---------------+---------------+       +-------------------------------+
+                          |
+          +---------------v---------------+
+          |hostname: namespace-03         |
+          |pid namespace:4026532507       |
+          +-------------------------------+
+```  
+
+- terminal-2
+```
+### 查看进程树 ###
+# pstree -pl
+bash(1)───pstree(23)
+
+### 执行bash产生子进程 ###
+# bash
+
+### 输出子进程号 ###
+# echo $$
+24
+
+### 在子进程中执行sleep，产生孙进程，后台进程，当前bash依然为bash(24) ###
+# sleep 3600 &
+[1] 33
+
+### 查看进程树 ###
+# pstree -pl
+bash(1)───bash(24)─┬─pstree(34)
+                   └─sleep(33)
+### 退出bash(24) ###
+# exit
+exit
+
+### 查看进程树，由于bash(24)退出，sleep(33)的父进程变成了bash(1) ###
+# pstree -pl
+bash(1)─┬─pstree(35)
+        └─sleep(33)
+
+### 退出namespace02的bash(1) ###
+# exit
+exit
+
+### 查看完整进程树，没有sleep进程，说明namespace02中的bash(1)退出后，namespace02中的其他进程都被kill掉了 ###
+# pstree -pl
+systemd(1)─┬─NetworkManager(664)─┬─{NetworkManager}(671)
+           │                     └─{NetworkManager}(678)
+           ├─agetty(657)
+           ├─auditd(614)───{auditd}(615)
+           ├─crond(653)
+           ├─dbus-daemon(641)───{dbus-daemon}(646)
+           ├─firewalld(663)───{firewalld}(791)
+           ├─lvmetad(490)
+           ├─master(1259)─┬─pickup(1812)
+           │              └─qmgr(1266)
+           ├─polkitd(639)─┬─{polkitd}(648)
+           │              ├─{polkitd}(649)
+           │              ├─{polkitd}(652)
+           │              ├─{polkitd}(658)
+           │              └─{polkitd}(661)
+           ├─rsyslogd(970)─┬─{rsyslogd}(974)
+           │               └─{rsyslogd}(975)
+           ├─sshd(969)─┬─sshd(1421)───bash(1425)───unshare(1792)───bash(1793)
+           │           ├─sshd(1848)───bash(1852)───pstree(2123)
+           │           └─sshd(1952)───bash(1956)───nsenter(1996)───bash(1997)
+           ├─systemd-journal(462)
+           ├─systemd-logind(640)
+           ├─systemd-udevd(498)
+           └─tuned(968)─┬─{tuned}(1362)
+                        ├─{tuned}(1363)
+                        ├─{tuned}(1364)
+                        └─{tuned}(1378)
+```  
+
+- terminal-1  
+```
+### 查看namespace01的进程树 ###
+# pstree
+bash───pstree
+
+### 执行bash产生子进程 ###
+# bash
+
+### 输出进程号 ###
+# echo $$
+143
+
+### 执行bash产生子进程 ###
+# bash
+
+### 输出进程号 ###
+# echo $$
+152
+
+### 执行sleep，后台执行 ###
+# sleep 3600 &
+[1] 162
+
+### 查看当前状态的进程树 ###
+# pstree -pl
+bash(1)───bash(143)───bash(152)─┬─pstree(163)
+                                └─sleep(162)
+
+### sleep为后台执行进程，当前bash进程为bash(152)，退出当前进程 ###
+# exit
+exit
+
+### 查看当前状态进程树，sleep(162)的父进程变成bash(1)，而不是bash(143) ###
+# pstree -pl
+bash(1)─┬─bash(143)───pstree(164)
+        └─sleep(162)
+
+```  
