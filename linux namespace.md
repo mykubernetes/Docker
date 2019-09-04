@@ -375,4 +375,101 @@ total 0
 关于shared subtrees：由上可知，在同一个namespace中挂载新设备时，其他namespace不受影响。但是，如果需要在所有namespace中挂着相同的设备时，就需要在每个namespace中执行相同的mount操作，非常麻烦，shared subtrees解决了这个问题。关于shared subtrees的更多内容https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt  
 
 
+3、ipc namespace
+---
+IPC（inter-process communication）namespace，主要用来隔离svipc - System V inter-process communication mechanisms和POSIX。IPC和POSIX都是用来实现进程之间的数据交换的。ipc mechanisms包括：message queues、semaphore sets、shared memory segments。POSIX与IPC的message queues功能类似，但实现方式不同。
+
+- terminal-1
+```
+### 创建新的ipc namespace和uts namespace并运行bash ###
+# unshare --uts --ipc bash
+
+### 修改hostname以便于区分 ###
+# hostname namespace-01 && exec bash
+
+### 查看inode number，确保新namespace创建成功 ###
+# readlink /proc/$$/ns/{uts,ipc}
+uts:[4026532499]
+ipc:[4026532500]
+
+### 查看所有IPC对象信息 ###
+# ipcs
+
+------ Message Queues --------
+key        msqid      owner      perms      used-bytes   messages    
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems 
+
+### 创建一个MQ ###
+# ipcmk -Q
+Message queue id: 0
+
+### 查看MQ对象，-q参数表示仅显示MQ信息 ###
+# ipcs -q
+
+------ Message Queues --------
+key        msqid      owner      perms      used-bytes   messages    
+0x2e011e55 0          root       644        0            0 
+
+### 显示当前进程pid ###
+# echo $$
+1459
+```  
+
+- terminal-2  
+```
+### 在另一个终端中创建新的ipc namespace和uts namespace ###
+# unshare --uts --ipc bash
+
+### 修改hostname便于区分 ###
+# hostname namespace-02 && exec bash
+
+### 确保不在同一个namespace ###
+# readlink /proc/$$/ns/{uts,ipc}
+uts:[4026532501]
+ipc:[4026532502]
+
+### 查看当前namespace的ipc对象，无法看到msqid为0的MQ ###
+# ipcs
+
+------ Message Queues --------
+key        msqid      owner      perms      used-bytes   messages    
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems     
+```  
+
+- terminal-3  
+```
+### 在namespace01中执行新的bash ###
+# nsenter --target 1459 --uts --ipc bash
+
+### 查看inode number，确保与terminal-1中一致 ###
+# readlink /proc/$$/ns/{uts,ipc}
+uts:[4026532499]
+ipc:[4026532500]
+
+### 查看ipc对象信息 ###
+# ipcs
+
+------ Message Queues --------
+key        msqid      owner      perms      used-bytes   messages    
+0x2e011e55 0          root       644        0            0           
+
+------ Shared Memory Segments --------
+key        shmid      owner      perms      bytes      nattch     status      
+
+------ Semaphore Arrays --------
+key        semid      owner      perms      nsems
+```  
+- ipc namespace与uts namespace都不存在嵌套或者上下级关系
+- 这里使用了三个终端和两个ipc namespace，为便于观察，分别设置了两个hostname
+
 
