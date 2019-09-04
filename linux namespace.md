@@ -42,8 +42,9 @@ CentOS Linux release 7.5.1804 (Core)
 Linux localhost.localdomain 3.10.0-862.el7.x86_64 #1 SMP Fri Apr 20 16:44:24 UTC 2018 x86_64 x86_64 x86_64 GNU/Linux
 ```  
 
-1、uts namespace  
-UTS（UNIX Time-sharing System），用来隔离hostname和NIS domain name，每个uts namespace中运行的进程拥有独立的hostname和NIS，互不影响。
+1、uts namespace 
+---
+UTS（UNIX Time-sharing System），用来隔离hostname和NIS domain name，每个uts namespace中运行的进程拥有独立的hostname和NIS，互不影响。  
 
 - terminal-1  
 ```
@@ -288,12 +289,90 @@ namespace-02
 ```  
 
 
+2、mnt namespace
+---
+Mount namespace的作用是隔离mount point，每个mnt namespace内的文件结构可以单独修改，互不影响。  
+```
+### 当前进程所在的mnt namespace的所有挂载点信息记录在以下三个文件中 ###
+# ll /proc/$$/mount*
+-r--r--r--. 1 root root 0 Feb 20 12:24 /proc/1425/mountinfo
+-r--r--r--. 1 root root 0 Feb 20 12:24 /proc/1425/mounts
+-r--------. 1 root root 0 Feb 20 12:24 /proc/1425/mountstats
+
+### 为接下来的操作准备两个目录，每个目录下一个文件 ###
+# mkdir namespace01 && touch namespace01/namespace01.txt
+# mkdir namespace02 && touch namespace02/namespace02.txt
+```  
+
+- terminal-1  
+```
+### 创建新的mount namespace和uts namespace并运行bash ###
+# unshare --mount --uts bash
+
+### 设置hostname以便于观察 ###
+# hostname namespace-01 && exec bash
+
+### 查看对应namespace的inode number ###
+# readlink /proc/$$/ns/{uts,mnt}
+uts:[4026532499]
+mnt:[4026532418]
+
+### 将上面创建的namespace01目录挂在到/mnt ###
+# mount --bind namespace01/ /mnt/
+
+### 查看/mnt目录下的文件 ###
+# ll /mnt/
+total 0
+-rw-r--r--. 1 root root 0 Feb 20 12:46 namespace01.txt
+```  
 
 
+- terminal-2
+```
+### 在另一个终端上创建新的mount namespace和uts namespace，执行bash ###
+# unshare --mount --uts bash
 
+### 设置对应的hostname以便于区别 ###
+# hostname namespace-02 && exec bash
 
+### 查看对应的inode number，确保与terminal-1中的进程不在同一个namespace ###
+# readlink /proc/$$/ns/{uts,mnt}
+uts:[4026532501]
+mnt:[4026532500]
 
+### 挂载namespace02之前，首先查看/mnt目录，证实namespace02无法看到与namespace01相同的内容 ###
+# ll /mnt/
+total 0
 
+### 将namespace02目录挂在到/mnt ###
+#  mount --bind namespace02/ /mnt/
+
+### 查看/mnt目录下的文件 ###
+# ll /mnt/
+total 0
+-rw-r--r--. 1 root root 0 Feb 20 12:46 namespace02.txt
+```  
+当新的mount namespace创建时，会从创建进程所在的namespace复制挂载点信息，所以namespace01和namespace02都可以看到相同的文件视图  
+
+- terminal-1  
+```
+### 在terminal-1下继续创建namespace03 ###
+# unshare --mount --uts bash
+
+### 修改hostname以便于区分 ###
+# hostname namespace-03 && exec bash
+
+### 查看inode number，与上述namespace01和namespace02均不同 ###
+# readlink /proc/$$/ns/{uts,mnt}
+uts:[4026532503]
+mnt:[4026532502]
+
+### 查看/mnt目录，视图与namespace01相同，无法看到namespace02的内容 ###
+# ll /mnt/
+total 0
+-rw-r--r--. 1 root root 0 Feb 20 12:46 namespace01.txt
+```  
+关于shared subtrees：由上可知，在同一个namespace中挂载新设备时，其他namespace不受影响。但是，如果需要在所有namespace中挂着相同的设备时，就需要在每个namespace中执行相同的mount操作，非常麻烦，shared subtrees解决了这个问题。关于shared subtrees的更多内容https://www.kernel.org/doc/Documentation/filesystems/sharedsubtree.txt  
 
 
 
