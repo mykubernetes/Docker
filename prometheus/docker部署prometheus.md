@@ -324,3 +324,26 @@ https://grafana.com/dashboards
 ![image](https://github.com/mykubernetes/linux-install/blob/master/image/grafana5.png)  
 
 
+grafana-cli命令
+```
+列出可用的插件
+#grafana-cli plugins list-remote
+
+安装最新版本的插件
+#grafana-cli plugins install <plugin-id>
+
+安装特定版本的插件
+#grafana-cli plugins install <plugin-id> <version>
+
+列出安装的插件
+#grafana-cli plugins ls
+
+更新所有安装的插件
+#grafana-cli plugins update-all
+
+更新一个插件
+#grafana-cli plugins update <plugin-id>
+
+删除一个插件
+#grafana-cli plugins remove <plugin-id>
+```
