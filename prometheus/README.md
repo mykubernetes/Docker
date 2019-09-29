@@ -1,3 +1,7 @@
+权威告警规则  
+https://awesome-prometheus-alerts.grep.to/
+===
+
 curl方式动态加载命令  
 ```
 curl -X POST http://localdns:9090/-/reload
