@@ -19,7 +19,7 @@ node ("slave1-192.168.0.215") {
         cp -rf ${WORKSPACE} /usr/share/nginx/html/wp.aliangedu.com'''
    }
    stage('test') {
-       sh "curl http://wp.aliangedu.com/status.html"
+       sh "curl http://127.0.0.1/status.html"
    }
 }
 
@@ -52,7 +52,7 @@ node ("192.168.0.216") {
         /bin/bash $TOMCAT_HOME/bin/startup.sh'''
    }
    stage('test') {
-       sh "curl http://test.aliangedu.com/status.html"
+       sh "curl http://127.0.0.1/status.html"
    }
 }
 ```  
