@@ -9,7 +9,10 @@ prometheus配置文件
         separator: ','                          #指定分隔符，默认为","
         regex: '(container_tasks_state|container_memory_failures_total)'  #正则表达式，key,对名称是这两个的标签执行动作
         action: drop                            #动作删除
-```  
+```
+- relabel_configs # 抓取之前使用
+- metrics_relabel_configs # 抓取之后使用
+
 2、更换标签  
 ```
   - job_name: 'docker'
