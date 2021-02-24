@@ -47,11 +47,11 @@ https://prometheus.io/docs/prometheus/latest/configuration/configuration/#%3Crel
 • 删除标签  
 • 过滤目标  
 action：重新标签动作
-- replace：默认，通过regex匹配source_label的值，使用replacement来引用表达式匹配的分组
-- keep：删除regex与连接不匹配的目标 source_labels
-- drop：删除regex与连接匹配的目标 source_labels
-- labeldrop：删除regex匹配的标签
-- labelkeep：删除regex不匹配的标签
+- replace：将regex与source_labels进行匹配，如果匹配，那么设置target_label为replacement，如果正则表达式不匹配，那么就不执行动作。
+- keep：针对正则表达式不匹配source_labels的目标，就丢弃
+- drop：针对正则表达式匹配的source_labels的目标，就丢弃
+- labeldrop：将regex与所有标签名匹配。任何匹配的标签都将从标签集中删除
+- labelkeep：将regex与所有标签名匹配。任何不匹配的标签将从标签集中删除
 - hashmod：设置target_label为modulus连接的哈希值source_labels
 - labelmap：匹配regex所有标签名称。然后复制匹配标签的值进行分组，replacement分组引用（${1},${2},…）替代
 ```
