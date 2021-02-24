@@ -54,6 +54,9 @@ action：重新标签动作
 - labelkeep：将regex与所有标签名匹配。任何不匹配的标签将从标签集中删除
 - hashmod：设置target_label为modulus连接的哈希值source_labels
 - labelmap：匹配regex所有标签名称。然后复制匹配标签的值进行分组，replacement分组引用（${1},${2},…）替代
+
+如果没有定义action，那么默认的就是replace.
+
 ```
 relable_configs:
   # 源标签
