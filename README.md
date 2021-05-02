@@ -255,3 +255,87 @@ docker logs -t # 显示守护式容器日志的时间戳
 
 docker top	# 查看容器内部运行的进程
 ```
+
+10、Dockerfile
+```
+# Linux x64
+FROM alpine
+
+LABEL maintainer="multiparam@gmail.com"
+
+# Install Node and NPM
+RUN apk add --update nodejs nodejs-npm
+
+# Copy app to /src
+COPY . /src
+
+WORKDIR /src
+
+# Install dependencies
+RUN  npm install
+
+EXPOSE8080
+
+ENTRYPOINT ["node", "./app.js"]
+```
+
+12、构建dockerfile
+```
+# 构建出一个叫 web:latest 的镜像，.（点）表示将当前目录作为构建上下文并且当前目录需要包含 Dockerfile
+# 如果没有指定标签的话，那么会默认设置一个 latest 标签
+docker image build -t web:latest .
+# 可以通过 docker image build 的输出内容了解镜像的构建过程，而构建过程的最终结果是返回了新镜像的 ID。其实，构建的每一步都会返回一个镜像的 ID。
+```
+
+13、docker image build 构建镜像
+```
+# 构建出一个叫 web:latest 的镜像（-t 参数是为镜像打标签），. 表示将当前目录作为构建上下文并且当前目录需要包含 Dockerfile（当然也可以通过 -f 参数可以指定位于任意路径下的任意名称的 Dockfile）
+docker image build -t web:latest .
+
+# 强制忽略对缓存的使用。为什么需要这个功能呢？因为如果构建中有用到 apt-get update 的话，那么碰到了由带有 apt-get update 构建出来的缓存内容之后，Docker 将不会刷新 APT 包的缓存，但是此时你又需要每个包的最新版本。
+docker image build --no-cache -t web:latest
+
+docker image build -t web:latest --squash			# 创建一个合并的镜像
+
+# 可以指定一个 git 仓库的源地址来指定 Dockerfile 的位置
+docker image build -t web:latest git@github.com:test/test
+```
+
+14、docker commit 构建镜像
+```
+# 提交一个新的镜像层，增加在原来的镜像之上
+docker commit <ContainerID>  <NewRepository>:<Tag>
+
+# 提交时可以指定更多的数据
+docker commit -m="A new custom image" --author="DawnGuo"  <ContainerID>  <NewRepository>:<Tag>
+```
+
+15、推送镜像相关
+```
+# 在推送之前，先使用 Docker ID 登录 Docker Hub。个人认证信息会保存到 $HOME/.docker/config.json
+docker login
+
+# 在推送之前，可能需要为镜像打上标签
+docker imgae tag <CurrentRepositry>:<CurrentTag> <NewRepositry>:<NewTag>
+
+# 下面这个例子会将镜像推送到 <Registry>/<Repositry> 这个仓库中
+# 在推送过程中需要指定 Registry（镜像仓库服务）、Repository（镜像仓库）和 Tag（镜像标签）等信息
+# 但是不指定 Registry 和 Tag 也可以，Docker 会默认 Registry 为 docker.io，Tag 为 latest，但是 Repository 没有默认值，而是从被推送的镜像的 Repositry 属性值获取（比如 web:latest 中的 web 值就作为 Repositry）
+docker image push <Registry>/<Repositry>:<Tag>
+
+
+# 下面展示如何向 Docker Hub 中推荐，在创建了自己的 Docker ID 并登录的前提下。
+# 1. 首先是给镜像打上标签，因为假如直接将 web:latest 进行推送的话，其实是直接推送到 docker.io/web:latest 中，但是对于 docker.io/web 这个仓库我们是没有访问权限的，我们顶多是推送到 docker.io/<YourDockerID>/web 中，所以我们需要将其重新打标签，相当于将仓库重命名。
+# 2. 之后推送打上新标签的仓库，那么将会将这个镜像 push 到 docker.io/<YourDockerID>/web 这个仓库中了
+docker image tag web:latest <YourDockerID>/web:latest
+
+docker image push <YourDockerID>/web:latest
+```
+
+16、其他
+```
+# 查看构建镜像的过程中都执行了哪些指令，每行显示一个指令，那些 SIZE 列对应的数值不为零的指令表示会新建镜像层
+docekr image history <REPOSITORY>:<TAG>
+docker history
+docker inspect
+```
