@@ -40,6 +40,8 @@ docker stack down                    移除某个堆栈（不会删除数据）
 ```  
 
 一、Docker Swarm
+---
+
 1、Docker Swarm 配置集群节点  
 ```
 $ docker swarm init --advertise-addr 192.168.99.100
@@ -48,12 +50,14 @@ $ docker swarm init --advertise-addr 192.168.99.100
         docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-envtxo4dl6df2ar3qldcccfdg 192.168.99.100:2377
   To add a manager to this swarm, run 'docker swarm join-token manager' and follow the instructions.
 ```  
+
 2、加入集群
 加入Swarm集群工作节点  
 ```
 docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlait9djhsk-envtxo4dl6df2ar3qldcccfdg 192.168.99.100:2377
 This node joined a swarm as a worker.
-```  
+```
+
 3、加入Swarm集群管理节点  
 ```
 $ docker swarm join-token manager
@@ -64,7 +68,50 @@ $ docker swarm join --token SWMTKN-1-5uwpqibnvmho1png8zmhcw8274yanohee32jyrcjlai
 This node joined a swarm as a manager.
 ```  
 
-二、docker service  
+4、当前swarm有哪些节点
+```
+# docker node ls
+ID                            HOSTNAME  STATUS   AVAILABILITY  MANAGER STATUS  ENGINE VERSION
+2pfwllgxpajx5aitlvcih9vsq     mini01    Ready    Active                        17.09.0-ce
+zho14u85itt5l2i6cpg8fcd6t     mini02    Ready    Active                        17.09.0-ce
+yo5f7qb28gf6g38ve4xhcis17 *   mini03    Ready    Active        Leader          17.09.0-ce
+```
+
+5、退出当前的swarm节点
+```
+# 在swarm管理机mini03上的操作
+
+# 其中 2pfwllgxpajx5aitlvcih9vsq 是mini01在swarm机器上的ID，根据docker node ls 获取
+# docker node rm --force 2pfwllgxpajx5aitlvcih9vsq           # 如果mini01上的docker没有停止服务，那么就需要使用 --force 选项
+2pfwllgxpajx5aitlvcih9vsq
+
+# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+zho14u85itt5l2i6cpg8fcd6t     mini02              Ready               Active                                  17.09.0-ce
+yo5f7qb28gf6g38ve4xhcis17 *   mini03              Ready               Active              Leader              17.09.0-ce
+##########################################
+
+# 需要在mini01上执行的命令，这样mini01才能彻底退出swarm管理
+# docker swarm leave
+Node left the swarm.
+```
+
+6、swarm管理机退出swarm
+- 首先需要删除所有节点，然后强制退出swarm即可
+```
+# docker node ls
+ID                            HOSTNAME            STATUS              AVAILABILITY        MANAGER STATUS      ENGINE VERSION
+yo5f7qb28gf6g38ve4xhcis17 *   mini03              Ready               Active              Leader              17.09.0-ce
+
+# docker swarm leave --force          # swarm管理机退出swarm，需要 --force 参数
+Node left the swarm. 
+
+# docker node ls
+Error response from daemon: This node is not a swarm manager. Use "docker swarm init" or "docker swarm join" to connect this node to swarm and try again.
+```
+
+二、docker service
+---
 0、创建一个overlay网络  
 ```
 # docker network create -d overlay demo
@@ -162,7 +209,8 @@ fa8a244c6bd5        bridge              bridge              local
 5ea08e9a282f        none                null                local
 ```
 
-三、docker stack  
+三、docker stack
+---
 1、编写配置文件  
 ```
 # cat docker-compose.yml 
@@ -250,7 +298,8 @@ wordpress        2
 ``` # docker stack deploy wordpress --compose-file=docker-compose.yml ```  
 
 
-四、Routing Mesh  
+四、Routing Mesh
+---
 1、internal---Container和Container之间的访问通过overlay网络（通过VIP虚拟IP）  
 2、ingress---如果服务有绑定接口，则此服务可通过任意swarm节点的相应接口访问  
 
