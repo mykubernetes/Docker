@@ -68,7 +68,46 @@ This node joined a swarm as a manager.
 0、创建一个overlay网络  
 ```
 # docker network create -d overlay demo
+
+# 查看网络
 # docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+fa8a244c6bd5        bridge              bridge              local
+51c95dea1e5c        docker_gwbridge     bridge              local
+7a7e31f4bce8        host                host                local
+5hgg372xwxbl        ingress             overlay             swarm
+lmt3pjswf7l0        demo                overlay             swarm
+5ea08e9a282f        none                null                local
+
+# 查看网络信息 
+# docker network inspect demo
+[
+    {
+        "Name": "demo",
+        "Id": "xiykborz8hn2td40ykhi20dck",
+        "Created": "0001-01-01T00:00:00Z",
+        "Scope": "swarm",
+        "Driver": "overlay",
+        "EnableIPv6": false,
+        "IPAM": {
+            "Driver": "default",
+            "Options": null,
+            "Config": []
+        },
+        "Internal": false,
+        "Attachable": true,
+        "Ingress": false,
+        "ConfigFrom": {
+            "Network": ""
+        },
+        "ConfigOnly": false,
+        "Containers": null,
+        "Options": {
+            "com.docker.network.driver.overlay.vxlanid_list": "4097"
+        },
+        "Labels": null
+    }
+]
 ```  
 1、创建一个service  
 ```
@@ -105,7 +144,23 @@ demo
 ```  
 
 6、更新  
-``` # docker service update --image mysql:v2.0 mysql ```
+``` 
+# docker service update --image mysql:v2.0 mysql
+```
+
+7、删除网络【慎用】
+```
+# docker network rm demo
+demo
+
+# docker network ls
+NETWORK ID          NAME                DRIVER              SCOPE
+fa8a244c6bd5        bridge              bridge              local
+51c95dea1e5c        docker_gwbridge     bridge              local
+7a7e31f4bce8        host                host                local
+5hgg372xwxbl        ingress             overlay             swarm
+5ea08e9a282f        none                null                local
+```
 
 三、docker stack  
 1、编写配置文件  
