@@ -209,7 +209,58 @@ fa8a244c6bd5        bridge              bridge              local
 5ea08e9a282f        none                null                local
 ```
 
-三、docker stack
+三、swarm标签管理
+---
+
+1、标签添加
+
+根据最开始的主机和组件部署规划，标签规划如下：在swarm管理机mini03上执行
+```
+# 给mini01机器的标签
+docker node update --label-add tomcat=true mini01
+docker node update --label-add datanode=true mini01
+docker node update --label-add hbase-regionserver-1=true mini01
+
+# 给mini02机器的标签
+docker node update --label-add tomcat=true mini02
+docker node update --label-add datanode=true mini02
+docker node update --label-add hbase-regionserver-2=true mini02
+
+# 给mini03机器的标签
+docker node update --label-add spark=true mini03
+docker node update --label-add zookeeper=true mini03
+docker node update --label-add namenode=true mini03
+docker node update --label-add hbase-master=true mini03
+```
+
+2、删除标签
+
+在swarm管理机mini03上执行，示例如下：
+```
+docker node update --label-rm zookeeper mini03
+```
+
+3、查看swarm当前的标签
+
+在swarm管理机mini03上执行：
+```
+[root@mini03 ~]# docker node ls -q | xargs docker node inspect -f '{{.ID}}[{{.Description.Hostname}}]:{{.Spec.Labels}}'
+6f7dwt47y6qvgs3yc6l00nmjd[mini01]:map[tomcat:true datanode:true hbase-regionserver-1:true]
+5q2nmm2xaexhkn20z8f8ezglr[mini02]:map[tomcat:true datanode:true hbase-regionserver-2:true]
+ncppwjknhcwbegmliafut0718[mini03]:map[hbase-master:true namenode:true spark:true zookeeper:true]
+```
+
+四、查看日志
+---
+启动容器时，查看相关日志，例如如下：
+```
+docker stack ps hadoop
+docker stack ps hadoop --format "{{.Name}}: {{.Error}}"
+docker stack ps hadoop --format "{{.Name}}: {{.Error}}" --no-trunc
+docker stack ps hadoop --no-trunc
+```
+
+五、docker stack
 ---
 1、编写配置文件  
 ```
@@ -298,7 +349,7 @@ wordpress        2
 ``` # docker stack deploy wordpress --compose-file=docker-compose.yml ```  
 
 
-四、Routing Mesh
+六、Routing Mesh
 ---
 1、internal---Container和Container之间的访问通过overlay网络（通过VIP虚拟IP）  
 2、ingress---如果服务有绑定接口，则此服务可通过任意swarm节点的相应接口访问  
