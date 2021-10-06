@@ -15,4 +15,3 @@ kill -HUP pid
 
 https://www.cnblogs.com/xiangsikai/p/11293819.html  
 
-https://segmentfault.com/t/prometheus  
