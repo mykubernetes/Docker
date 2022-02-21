@@ -29,8 +29,9 @@ https://docs.docker.com/engine/docker-overview/
 
 官方仓库: https://hub.docker.com/
 
+![](Docker服务image/1.jpg)
 
-
+![](Docker服务image/2.jpg)
 
 ### 1.1.3 Docker 对比虚拟机
 
@@ -38,11 +39,11 @@ https://docs.docker.com/engine/docker-overview/
 - **开销更小：** 不需要启动单独的虚拟机占用硬件资源。
 - **启动速度更快：** 可以在数秒内完成启动。
 
-
+![](Docker服务image/3.jpg)
 
 使用虚拟机是为了更好的实现服务运行环境隔离，每个虚拟机都有独立的内核， 虚拟化可以实现不同操作系统的虚拟机，但是通常一个虚拟机只运行一个服务， 很明显资源利用率比较低且造成不必要的性能损耗，我们创建虚拟机的目的是为了运行应用程序，比如 Nginx、PHP、Tomcat 等 web 程序，使用虚拟机无疑带来了一些不必要的资源开销，但是容器技术则基于减少中间运行环节带来较大的 性能提升。
 
-
+![](Docker服务image/4.jpg)
 
 但是，如上图一个宿主机运行了 N 个容器，多个容器带来的以下问题怎么解决:
 
@@ -210,7 +211,7 @@ Docker 启动一个容器也需要一个外部模板但是较多镜像，docke �
 
 Docker 的镜像是分层的，镜像底层为库文件且只读层即不能写入也不能删除数据，从镜像加载启动为一个容器后会生成一个可写层，其写入的数据会复制到容器目录，但是容器内的数据在删除容器后也会被随之删除。
 
-
+![](Docker服务image/5.jpg)
 
 #### 1.1.6.3 pouch
 
@@ -776,13 +777,15 @@ Usage of containerd-shim:
 5. 在整个容器生命周期中，containerd 通过 epoll 监控容器文件，监控容器事件。
 ```
 
+![](Docker服务image/6.jpg)
+
 #### 1.2.10.5 grpc 简介
 
 gRPC 是 Google 开发的一款高性能、开源和通用的 RPC 框架，支持众多语言客户端。
 
 https://www.grpc.io/
 
-
+![](Docker服务image/7.jpg)
 
 ## 1.3 docker 镜像加速
 
@@ -810,6 +813,7 @@ Docker 镜像含有启动容器所需要的文件系统及所需要的内容，�
 
 Docker 镜像含里面是一层层文件系统,叫做 Union File System（Union FS 联合文件系统），2004 年由纽约州立大学石溪分校开发，联合文件系统可以将多 个目录挂载到一起从而形成一整个虚拟文件系统，该虚拟文件系统的目录结构就 像普通 linux 的目录结构一样，docker 通过这些文件再加上宿主机的内核提供 了一个 linux 的虚拟环境,每一层文件系统我们叫做一层 layer，联合文件系统可 以对每一层文件系统设置三种权限，只读（readonly）、读写（readwrite）和写 出（whiteout-able），但是 docker 镜像中每一层文件系统都是只读的,构建镜 像的时候,从一个最基本的操作系统开始,每个构建的操作都相当于做一层的修改, 增加了一层文件系统,一层层往上叠加,上层的修改会覆盖底层该位置的可见性， 这也很容易理解，就像上层把底层遮住了一样,当使用镜像的时候，我们只会看 到一个完全的整体，不知道里面有几层也不需要知道里面有几层，结构如下：
 
+![](Docker服务image/8.jpg)
 
 ```
 [15:10:30 root@ubuntu18-04 ~]#pwd
@@ -830,11 +834,11 @@ system/
 
 下图就是有两个不同的镜像在一个宿主机内核上实现不同的 rootfs。
 
-
+![](Docker服务image/9.jpg)
 
 容器、镜像父镜像
 
-
+![](Docker服务image/10.jpg)
 
 docker 命令是最常使用的 docker 客户端命令，其后面可以加不同的参数以实 现相应的功能，常用的命令如下：
 
@@ -1684,6 +1688,7 @@ Tomcat Web Page2
 
 ### 2.5.3 访问 haproxy 控制端
 
+![](Docker服务image/11.jpg)
 
 ## 2.6 基于官方 alpine 基础镜像制作自定义镜像
 ```
@@ -1927,7 +1932,7 @@ Harbor 是一个用于存储和分发 Docker 镜像的企业级 Registry 服务�
 - **harbor 官方 github 地址：** https://github.com/vmware/harbor
 - **harbor 官方网址：** https://goharbor.io/
 
-
+![](Docker服务image/12.jpg)
 
 **基于角色的访问控制：** 用户与 Docker 镜像仓库通过“项目”进行组织管理， 一个用户可以对多个镜像仓库在同一命名空间（project）里有不同的权限。 镜像复制：镜像可以在多个 Registry 实例中复制（同步）。尤其适合于负载均衡，高可用，混合云和多云的场景。
 
@@ -2070,6 +2075,7 @@ Creating nginx             ... done
 
 ### 4.3.3 登录web页面
 
+![](Docker服务image/13.jpg)
 
 win电脑需要在hosts文件添加域名才可以使用域名访问，也可以直接使用IP地址访问
 
@@ -2194,6 +2200,8 @@ b2175d74c6e4: Pushed
 v1: digest: sha256:3048cfd8534a9cb73a9b9fdd17f8567294831d768e4a5675f01fd850db314ef0 size: 1157
 ```
 
+![](Docker服务image/14.jpg)
+
 新建项目时，勾选公开表示可以匿名下载本项目中镜像，但是上传必须登录，如果不勾选表示上传和下载都得登录
 
 #### 4.8.3.2 下载镜像
@@ -2222,14 +2230,14 @@ anaconda-post.log  bin  dev  etc  home  lib  lib64  media  mnt  opt  proc  root 
 ## 4.9 实现 harbor 高可用
 高可用实现方式
 
-
+![](Docker服务image/15.jpg)
 
 Harbor 支持基于策略的 Docker 镜像复制功能，这类似于 MySQL 的主从同步， 其可以实现不同的数据中心、不同的运行环境之间同步镜像，并提供友好的管理界面，大大简化了实际运维中的镜像管理工作，已经有用很多互联网公司使用 harbor 搭建内网 docker 仓库的案例，并且还有实现了双向复制的案列，本文将实现单向复制的部署
 
 ### 4.9.1 实现双向同步复制的高可用
 架构图
 
-
+![](Docker服务image/16.jpg)
 
 #### 4.9.1.1 部署harbor的同步集群
 ```
@@ -2243,6 +2251,7 @@ hostname: 192.168.10.184   #这里只能写这个机器的IP地址，写域名�
 [19:57:52 root@ubuntu18-04 harbor]#./install.sh
 ```
 
+![](Docker服务image/17.jpg)
 
 在仓库管理中点新建
 
@@ -2250,6 +2259,7 @@ hostname: 192.168.10.184   #这里只能写这个机器的IP地址，写域名�
 
 **我这里192.168.10.185有镜像192.168.10.184没有镜像第一次需要同步一次**
 
+![](Docker服务image/18.jpg)
 
 名称：随便写
 
@@ -2391,7 +2401,7 @@ Login Succeeded
 
 如下图是将对根的数据写入到了容器的可写层，但是把/data 中的数据写入到 了一个另外的 volume 中用于数据持久化。
 
-
+![](Docker服务image/19.jpg)
 
 5.1 数据类型
 Docker 的镜像是分层设计的，镜像层是只读的，通过镜像启动的容器添加了 一层可读写的文件系统，用户写入的数据都保存在这一层当中。
@@ -2402,6 +2412,7 @@ Docker 的镜像是分层设计的，镜像层是只读的，通过镜像启动�
 
 二是数据卷容器(Data volume container), 数据卷容器是将宿主机的目录挂载至一个专门的数据卷容器，然后让其他容器通过数据卷容器读写宿主机的数据。
 
+![](Docker服务image/20.jpg)
 
 ```
 [17:13:46 root@docker centos]#docker inspect fbc376847a52  #查看指定PID的容器信息
@@ -2463,6 +2474,7 @@ ls: cannot access '/var/lib/docker/overlay2/5e1e19f7281ab1c42dbeb2343bc98e30ef29
 
 左侧是无状态的 http 请求服务，右侧为有状态。 下层为不需要存储的服务，上层为需要存储的部分服务。
 
+![](Docker服务image/21.jpg)
 
 
 #### 5.1.1.1 创建 APP 目录并生成 web 页面
@@ -2949,6 +2961,8 @@ lo: flags=73<UP,LOOPBACK,RUNNING>  mtu 65536
 ### 6.2.4 bridge 模式
 docker 的默认模式即不指定任何模式就是 bridge 模式，也是使用比较多的模式， 此模式创建的容器会为每一个容器分配自己的网络 IP 等信息，并将容器连接到 一个虚拟网桥与外界通信。
 
+![](Docker服务image/22.jpg)
+
 ```
 #查看bridge详细信息
 [19:50:53 root@docker ~]#docker inspect bridge 
@@ -3348,7 +3362,7 @@ oom_kill 0
 
 https://github.com/kubernetes/kubernetes/blob/release-1.8/CHANGELOG-1.8.md
 
-
+![](Docker服务image/23.jpg)
 
 ## 7.4 容器的 CPU 限制
 https://docs.docker.com/config/containers/resource_constraints/
@@ -3739,6 +3753,8 @@ Starting services-tomcat-web1 ... done
 
 ### 8.7.1 架构图
 
+![](Docker服务image/24.jpg)
+
 ```
 说明:
 当用户访问www.zhangzhuo.org/html目录下的文件时有nginx进行处理
@@ -4065,6 +4081,8 @@ accept : */*
 x-forwarded-for : 192.168.10.181
 <br />
 ```
+
+![](Docker服务image/25.jpg)
 
 # 九、Docker swarm集群
 
