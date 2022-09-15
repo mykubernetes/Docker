@@ -819,5 +819,6 @@ docker-compose start          #运行
 docker-compose stop           #停止
 ```  
 
-详细配置  
-https://www.jianshu.com/p/2217cfed29d7  
+详细配置
+- https://www.jianshu.com/p/2217cfed29d7
+- https://blog.csdn.net/m0_46090675/article/details/121873943?spm=1001.2014.3001.5502
