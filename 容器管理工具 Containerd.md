@@ -2133,3 +2133,6 @@ CONTAINER    IMAGE    RUNTIME
 # ctr -n moby tasks ls
 TASK    PID    STATUS
 ```
+
+参考：
+- https://blog.csdn.net/weixin_51928751/article/details/126395696
